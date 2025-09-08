@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusFire - Profile</title>
+    <link rel="stylesheet" href="profile.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">
+            <span class="logo-icon">🏛️</span>
+            <a href=landingpage.html>FocusHive</a>
+        </div>
+        <div class="nav-center">
+            <div class="nav-links">
+                    <a href="dashboard (1).html" class="nav-link">Dashboard</a>
+                    <a href="Rooms.html" class="nav-link">Study Room</a>
+                    <a href="chatRoom.html" class="nav-link">Chat Room</a>
+                    <a href="#ai-buddy" class="nav-link">AI Buddy</a>
+                    <a href="Analytics.html" class="nav-link">Analytics</a>
+                    <a href="profile.html" class="nav-link">Profile</a>
+                    <a href="#settings" class="nav-link">Settings</a>
+            </div>
+        </div>
+        <div class="nav-buttons">
+            <a href="login.html" class="login-btn">Login</a>
+            <a href="signUpPage.html" class="btn-primary">Sign Up</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Profile Header -->
+        <!-- Profile Header -->
+<div class="profile-header">
+    <div class="profile-top">
+        <!--  profile-avatar div  -->
+<div class="profile-avatar" id="profile-avatar-container">
+    <div class="avatar-initial" id="avatar-initial">A</div>
+    <img class="avatar-preview" id="avatar-preview" src="" alt="Profile">
+    <div class="avatar-upload" onclick="document.getElementById('avatar-upload').click()">📷</div>
+    <div class="avatar-delete" onclick="deleteProfilePicture()">🗑️</div>
+    <input type="file" id="avatar-upload" style="display: none;" accept="image/*">
+</div>
+        <div class="profile-info">
+            <h1 id="profile-name">Welcome to FocusHive!</h1>
+            <div class="role">Please complete your profile to get started</div>
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <span class="stat-number" id="study-hours">245</span>
+                    <span class="stat-label">Study Hours</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="day-streak">7</span>
+                    <span class="stat-label">Day Streak</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="weekly-goal">89%</span>
+                    <span class="stat-label">Weekly Goal</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        <!-- Profile Content Grid -->
+        <div class="profile-grid">
+            <!-- Personal Information -->
+            <div class="profile-card">
+                <h2><span class="card-icon">👤</span>Personal Information</h2>
+                <button id="edit-info-btn" class="btn-secondary" onclick="toggleEditMode()">✏️ Edit Information</button>
+                <form id="personal-info-form">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-input" value="" id="fullName" required />
+                        <div class="error-message" id="fullName-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" value="" id="email" required />
+                        <div class="error-message" id="email-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Phone</label>
+                        <input type="tel" class="form-input" value="" id="phone" />
+                        <div class="error-message" id="phone-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Bio</label>
+                        <textarea class="form-input form-textarea" id="bio" placeholder="Tell us about yourself..."></textarea>
+                        <div class="error-message" id="bio-error"></div>
+                    </div>
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                    <button type="button" class="btn-secondary" onclick="resetForm()">Reset</button>
+                </form>
+            </div>
+
+            <!-- Achievements -->
+            <div class="profile-card">
+                <h2><span class="card-icon">🏆</span>Achievements</h2>
+                <div class="achievement-grid">
+                    <div class="achievement-card" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); color: #333;">
+                        <span class="achievement-icon">🔥</span>
+                        <div class="achievement-title">Week Warrior</div>
+                        <div class="achievement-desc">7 day streak</div>
+                    </div>
+                    <div class="achievement-card" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); color: #333;">
+                        <span class="achievement-icon">⚡</span>
+                        <div class="achievement-title">Focus Master</div>
+                        <div class="achievement-desc">100+ hours</div>
+                    </div>
+                    <div class="achievement-card" style="background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%); color: #333;">
+                        <span class="achievement-icon">🎯</span>
+                        <div class="achievement-title">Goal Crusher</div>
+                        <div class="achievement-desc">Weekly target</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- To-Do List / Study Plan -->
+            <div class="profile-card">
+                <h2><span class="card-icon">📝</span>Study Plan</h2>
+                
+                <!-- Stats -->
+                <div class="todo-stats">
+                    <div class="todo-stat">
+                        <span class="todo-stat-number" id="total-tasks">0</span>
+                        <span class="todo-stat-label">Total</span>
+                    </div>
+                    <div class="todo-stat">
+                        <span class="todo-stat-number" id="completed-tasks">0</span>
+                        <span class="todo-stat-label">Completed</span>
+                    </div>
+                    <div class="todo-stat">
+                        <span class="todo-stat-number" id="pending-tasks">0</span>
+                        <span class="todo-stat-label">Pending</span>
+                    </div>
+                </div>
+
+                <!-- Add Task -->
+                <div class="todo-header">
+                    <input type="text" class="todo-input" id="todo-input" placeholder="Add a new study task...">
+                    <select class="priority-selector" id="priority-selector">
+                        <option value="low">Low</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                    <button class="add-todo-btn" onclick="addTodo()">Add Task</button>
+                </div>
+
+                <!-- Task List -->
+                <div class="todo-list" id="todo-list">
+                    <!-- Tasks will be added here dynamically -->
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="profile-card">
+                <h2><span class="card-icon">📊</span>Recent Activity</h2>
+                <div class="activity-timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h4>Completed Mathematics Session</h4>
+                            <p>Focused study session - 25 minutes</p>
+                            <div class="timeline-time">2 hours ago</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h4>Break Session</h4>
+                            <p>Short break - 5 minutes</p>
+                            <div class="timeline-time">3 hours ago</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h4>Physics Problem Set</h4>
+                            <p>Completed 15 problems</p>
+                            <div class="timeline-time">5 hours ago</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Section -->
+        <div class="profile-card full-width-section">
+            <h2><span class="card-icon">⚙️</span>Account Settings</h2>
+            <div class="settings-section">
+                <div class="settings-item">
+                    <div>
+                        <h4>Email Notifications</h4>
+                        <p>Receive study reminders and progress updates</p>
+                    </div>
+                    <div class="toggle-switch active" onclick="toggleSetting(this)">
+                        <div class="toggle-slider"></div>
+                    </div>
+                </div>
+                <div class="settings-item">
+                    <div>
+                        <h4>Sound Effects</h4>
+                        <p>Play sounds for timer completion and breaks</p>
+                    </div>
+                    <div class="toggle-switch active" onclick="toggleSetting(this)">
+                        <div class="toggle-slider"></div>
+                    </div>
+                </div>
+                <div class="settings-item">
+                    <div>
+                        <h4>Auto-start Breaks</h4>
+                        <p>Automatically start break sessions</p>
+                    </div>
+                    <div class="toggle-switch" onclick="toggleSetting(this)">
+                        <div class="toggle-slider"></div>
+                    </div>
+                </div>
+                <div class="settings-item">
+                    <div>
+                        <h4>Data Analytics</h4>
+                        <p>Share anonymous usage data to improve the service</p>
+                    </div>
+                    <div class="toggle-switch active" onclick="toggleSetting(this)">
+                        <div class="toggle-slider"></div>
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; gap: 16px; margin-top: 24px;">
+                <button class="btn-secondary">Change Password</button>
+                <button class="btn-danger">Delete Account</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEW ELEMENTS FOR ADDED FEATURES -->
+    
+    <!-- Popup for image upload confirmation -->
+    <div class="popup-overlay" id="image-popup">
+        <div class="popup">
+            <div class="popup-icon">📷</div>
+            <h3 class="popup-title">Update Profile Picture</h3>
+            <p class="popup-message">Are you sure you want to update your profile picture?</p>
+            <div class="popup-buttons">
+                <button class="btn-secondary" onclick="hidePopup('image-popup')">Cancel</button>
+                <button class="btn-primary" onclick="confirmImageUpdate()">Update</button>
+                <!-- Delete button will be added dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast notification -->
+    <div class="toast" id="toast">
+        <span class="toast-icon" id="toast-icon">✅</span>
+        <span class="toast-message" id="toast-message">Profile updated successfully!</span>
+    </div>
+    <script src="profile.js"></script>
+    
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusFlow - Study Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+
+</head>
+<body>
+    <nav class="navbar">
+        <a class="logo" href="landingpage.html">FocusHive</a>
+        <div class="nav-links">
+             <a href="dashboard (1).html" class="nav-link">Dashboard</a>
+                    <a href="Rooms.html" class="nav-link">Study Room</a>
+                    <a href="chatRoom.html" class="nav-link">Chat Room</a>
+                    <a href="#ai-buddy" class="nav-link">AI Buddy</a>
+                    <a href="Analytics.html" class="nav-link">Analytics</a>
+                    <a href="profile.html" class="nav-link">Profile</a>
+                    <a href="#settings" class="nav-link">Settings</a>
+        </div>
+        <div class="user-section">
+            <a  class="login-btn" href="login.html">Login</a>
+            <a class="signup-btn" href="signUpPage.html">Sign Up</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="greeting">
+            <h1>Good morning, Alex! 👋</h1>
+            <p>Ready to make today productive? You're 7 days into your study streak!</p>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">⏰ Pomodoro Timer</h3>
+                    <p class="card-subtitle">Stay focused with the proven Pomodoro Technique</p>
+                </div>
+                <div class="card-content">
+                    <div class="timer-display">
+                        <div class="timer-circle">
+                            <div>
+                                <div class="timer-time" id="timerDisplay">25:00</div>
+                                <div class="timer-label">Focus Time</div>
+                            </div>
+                        </div>
+                        <div class="timer-controls">
+                            <button class="btn btn-primary" id="startBtn">▶ Start</button>
+                            <button class="btn btn-secondary" id="resetBtn">↻ Reset</button>
+                        </div>
+                    </div>
+                    <div class="stats-row">
+                        <div class="stat">
+                            <div class="stat-number" id="cyclesCount">3</div>
+                            <div class="stat-label">Cycles Today</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number" id="focusTime">145m</div>
+                            <div class="stat-label">Focus Time</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number" id="dayStreak">7</div>
+                            <div class="stat-label">Day Streak</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">📊 Weekly Goal</h4>
+                    </div>
+                    <div class="card-content">
+                        <div class="goal-stats">
+                            <span style="font-weight: 600;">245 minutes</span>
+                            <span style="font-size: 12px; color: #64748b;">300 minutes</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 82%"></div>
+                        </div>
+                        <p style="font-size: 12px; color: #64748b;">You're 82% of the way to your weekly goal! Keep it up!</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">🔥 Study Streak</h4>
+                    </div>
+                    <div class="streak-display">
+                        <div class="streak-number">7</div>
+                        <div class="streak-label">days in a row! You're on fire! 🔥</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">📅 Today's Schedule</h4>
+                    </div>
+                    <div class="card-content">
+                        <div class="schedule-item">
+                            <div class="schedule-dot blue"></div>
+                            <div class="schedule-content">
+                                <div class="schedule-title">Mathematics Review</div>
+                                <div class="schedule-time">9:00 - 10:30</div>
+                            </div>
+                        </div>
+                        <div class="schedule-item">
+                            <div class="schedule-dot orange"></div>
+                            <div class="schedule-content">
+                                <div class="schedule-title">Physics Problem Set</div>
+                                <div class="schedule-time">11:00 - 12:00</div>
+                            </div>
+                        </div>
+                        <div class="schedule-item">
+                            <div class="schedule-dot green"></div>
+                            <div class="schedule-content">
+                                <div class="schedule-title">Chemistry Notes</div>
+                                <div class="schedule-time">2:00 - 3:30</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">🏆 Recent Achievement</h4>
+                    </div>
+                    <div class="achievement-badge">
+                        <div class="badge-icon">🏆</div>
+                        <div class="badge-title">Week Warrior</div>
+                        <div class="badge-description">Completed 7 days of focused study sessions!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="quick-actions">
+            <a href="#" class="action-card">
+                <div class="action-icon blue">👥</div>
+                <div class="action-title">Join Study Room</div>
+                <div class="action-subtitle">24/7 virtual study sessions</div>
+            </a>
+            <a href="#" class="action-card">
+                <div class="action-icon blue">🤖</div>
+                <div class="action-title">AI Study Buddy</div>
+                <div class="action-subtitle">Get personalized help</div>
+            </a>
+            <a href="#" class="action-card">
+                <div class="action-icon orange">💬</div>
+                <div class="action-title">Chat Rooms</div>
+                <div class="action-subtitle">Connect with peers</div>
+            </a>
+            <a href="#" class="action-card">
+                <div class="action-icon green">📈</div>
+                <div class="action-title">Analytics</div>
+                <div class="action-subtitle">Track your progress</div>
+            </a>
+        </div>
+
+        <div class="recent-sessions">
+            <div class="card-header">
+                <h3 class="card-title">Recent Sessions</h3>
+                <p class="card-subtitle">Your latest study activity</p>
+            </div>
+            <div class="session-item">
+                <div class="session-icon completed"></div>
+                <div class="session-content">
+                    <div class="session-title">Focus Session - Mathematics</div>
+                    <div class="session-duration">25 minutes</div>
+                </div>
+                <div class="session-status completed">Completed</div>
+            </div>
+            <div class="session-item">
+                <div class="session-icon completed"></div>
+                <div class="session-content">
+                    <div class="session-title">Break Session</div>
+                    <div class="session-duration">5 minutes</div>
+                </div>
+                <div class="session-status completed">Completed</div>
+            </div>
+            <div class="session-item">
+                <div class="session-icon completed"></div>
+                <div class="session-content">
+                    <div class="session-title">Focus Session - Physics</div>
+                    <div class="session-duration">25 minutes</div>
+                </div>
+                <div class="session-status completed">Completed</div>
+            </div>
+            <div class="session-item">
+                <div class="session-icon interrupted"></div>
+                <div class="session-content">
+                    <div class="session-title">Focus Session - Chemistry</div>
+                    <div class="session-duration">20 minutes</div>
+                </div>
+                <div class="session-status interrupted">Interrupted</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="dash.js"></script>
+
+</body>
+</html>

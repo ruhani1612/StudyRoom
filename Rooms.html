@@ -1,0 +1,3259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusHive - Study Rooms</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #fafbfc;
+            color: #374151;
+            line-height: 1.5;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 20px;
+            font-weight: 700;
+            color: #3b82f6;
+        }
+
+        .logo::before {
+            content: "🎯";
+            margin-right: 8px;
+            font-size: 24px;
+        }
+
+        .logo h2 a,
+.logo h2 a:link,
+.logo h2 a:visited,
+.logo h2 a:hover,
+.logo h2 a:active {
+  color: inherit;            /* Keeps the same font color as surrounding text */
+  text-decoration: none;     /* Removes underline in all states */
+  cursor: pointer;           /* Keeps clickable feel (optional) */
+}
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .nav-link {
+            padding: 8px 16px;
+            text-decoration: none;
+            color: #6b7280;
+            font-weight: 500;
+            font-size: 14px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-link:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .nav-link.active {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn-secondary {
+            padding: 8px 16px;
+            background: transparent;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            color: #374151;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #f9fafb;
+        }
+
+        .btn-primary {
+            padding: 8px 16px;
+            background: #3b82f6;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 40px 0 60px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 12px;
+            transition: color 0.3s ease;
+        }
+
+        .page-header p {
+            font-size: 16px;
+            color: #6b7280;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+            transition: color 0.3s ease;
+        }
+
+        /* Search and Filters */
+        .search-section {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 32px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        .search-controls {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .search-input {
+            padding: 12px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            background: #f9fafb;
+            transition: all 0.2s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .filter-select {
+            padding: 12px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            min-width: 140px;
+            cursor: pointer;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        /* Study Rooms Grid */
+        .rooms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+
+        .room-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .room-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border-color: #3b82f6;
+        }
+
+        .room-header {
+            padding: 20px 20px 16px;
+            display: flex;
+            justify-content: between;
+            align-items: flex-start;
+        }
+
+        .room-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 8px;
+            transition: color 0.3s ease;
+        }
+
+        .room-participants {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .room-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-intensive {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .badge-peaceful {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-collaborative {
+            background: #fed7aa;
+            color: #9a3412;
+        }
+
+        .badge-structured {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-high-energy {
+            background: #fecaca;
+            color: #991b1b;
+        }
+
+        .badge-relaxed {
+            background: #e0e7ff;
+            color: #3730a3;
+        }
+
+        .room-details {
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .room-detail {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .room-detail-label {
+            font-size: 12px;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+            transition: color 0.3s ease;
+        }
+
+        .room-detail-value {
+            font-size: 14px;
+            color: #374151;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .room-footer {
+            padding: 16px 20px;
+            background: #f9fafb;
+            border-top: 1px solid #f3f4f6;
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        .join-btn {
+            width: 100%;
+            padding: 12px;
+            background: #3b82f6;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .join-btn:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+        }
+
+        /* Create Room Section */
+        .create-room-section {
+            text-align: center;
+            padding: 60px 0;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            margin-top: 40px;
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        .create-room-icon {
+            width: 64px;
+            height: 64px;
+            background: #eff6ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 24px;
+            color: #3b82f6;
+        }
+
+        .create-room-section h3 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 12px;
+            transition: color 0.3s ease;
+        }
+
+        .create-room-section p {
+            font-size: 16px;
+            color: #6b7280;
+            margin-bottom: 32px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            transition: color 0.3s ease;
+        }
+
+        .btn-create {
+            padding: 16px 32px;
+            background: #3b82f6;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-create:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .search-controls {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .rooms-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header h1 {
+                font-size: 28px;
+            }
+
+            .container {
+                padding: 0 16px;
+            }
+
+            .main-content {
+                padding: 24px 0 40px;
+            }
+            
+            .user-stats {
+                flex-direction: column;
+            }
+            
+            .ai-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .schedule-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .collab-tools {
+                flex-direction: column;
+            }
+            
+            .whiteboard-container {
+                height: 300px;
+            }
+            
+            .document-viewer {
+                height: 300px;
+            }
+            
+            .screen-share-container {
+                height: 300px;
+            }
+        }
+
+        /* Loading animation */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .loading {
+            animation: pulse 2s infinite;
+        }
+
+        /* Participant avatars */
+        .participants-avatars {
+            display: flex;
+            margin-left: 8px;
+        }
+
+        .avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            margin-left: -8px;
+            border: 2px solid white;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+        }
+
+        .avatar:nth-child(1) { background: #f59e0b; }
+        .avatar:nth-child(2) { background: #10b981; }
+        .avatar:nth-child(3) { background: #8b5cf6; }
+        .avatar:nth-child(4) { background: #ef4444; }
+        
+        /* Dark mode styles */
+        body.dark-mode {
+            background: #111827;
+            color: #e5e7eb;
+        }
+        
+        body.dark-mode .header {
+            background: #1f2937;
+            border-bottom: 1px solid #374151;
+        }
+        
+        body.dark-mode .search-section,
+        body.dark-mode .room-card,
+        body.dark-mode .create-room-section {
+            background: #1f2937;
+            border-color: #374151;
+        }
+        
+        body.dark-mode .room-footer {
+            background: #111827;
+            border-top: 1px solid #374151;
+        }
+        
+        body.dark-mode .search-input,
+        body.dark-mode .filter-select {
+            background: #374151;
+            border-color: #4b5563;
+            color: #e5e7eb;
+        }
+        
+        body.dark-mode .nav-link {
+            color: #9ca3af;
+        }
+        
+        body.dark-mode .nav-link:hover {
+            background: #374151;
+            color: #e5e7eb;
+        }
+        
+        body.dark-mode .page-header h1 {
+            color: #f3f4f6;
+        }
+        
+        body.dark-mode .page-header p {
+            color: #d1d5db;
+        }
+        
+        body.dark-mode .room-title {
+            color: #f3f4f6;
+        }
+        
+        body.dark-mode .room-participants {
+            color: #d1d5db;
+        }
+        
+        body.dark-mode .room-detail-label {
+            color: #d1d5db;
+        }
+        
+        body.dark-mode .room-detail-value {
+            color: #e5e7eb;
+        }
+        
+        body.dark-mode .create-room-section h3 {
+            color: #f3f4f6;
+        }
+        
+        body.dark-mode .create-room-section p {
+            color: #d1d5db;
+        }
+        
+        /* Theme toggle */
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+            font-size: 20px;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-toggle:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
+        
+        body.dark-mode .theme-toggle:hover {
+            background: #374151;
+            color: #e5e7eb;
+        }
+        
+        /* Advanced filters panel */
+        .advanced-filters {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        body.dark-mode .advanced-filters {
+            background: #1f2937;
+            border-color: #374151;
+        }
+        
+        .advanced-filters.active {
+            display: grid;
+        }
+        
+        .toggle-filters {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: none;
+            border: none;
+            color: #6b7280;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 8px 0;
+            margin-bottom: 16px;
+        }
+        
+        .toggle-filters:hover {
+            color: #3b82f6;
+        }
+        
+        /* Room preview modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+        
+        body.dark-mode .modal-content {
+            background: #1f2937;
+        }
+        
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        body.dark-mode .modal-header {
+            border-color: #374151;
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #6b7280;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+        
+        body.dark-mode .modal-footer {
+            border-color: #374151;
+        }
+        
+        /* AI Features section */
+        .ai-features {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 24px;
+            margin: 40px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        body.dark-mode .ai-features {
+            background: #1f2937;
+            border-color: #374151;
+        }
+        
+        .ai-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .ai-icon {
+            width: 40px;
+            height: 40px;
+            background: #8b5cf6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+        
+        .ai-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .ai-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+        
+        .ai-card {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        body.dark-mode .ai-card {
+            background: #374151;
+        }
+        
+        .ai-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .ai-card-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .ai-card-desc {
+            font-size: 14px;
+            color: #6b7280;
+        }
+        
+        body.dark-mode .ai-card-desc {
+            color: #d1d5db;
+        }
+        
+        /* Streaks and achievements */
+        .user-stats {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .stat-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 16px;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        body.dark-mode .stat-card {
+            background: #1f2937;
+            border-color: #374151;
+        }
+        
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            background: #eff6ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3b82f6;
+            font-size: 18px;
+        }
+        
+        .stat-info {
+            flex: 1;
+        }
+        
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+        
+        body.dark-mode .stat-value {
+            color: #f9fafb;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #6b7280;
+        }
+        
+        body.dark-mode .stat-label {
+            color: #d1d5db;
+        }
+        
+        /* Notification toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .toast.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        body.dark-mode .toast {
+            background: #1f2937;
+            border-color: #374151;
+        }
+        
+        .toast-icon {
+            width: 24px;
+            height: 24px;
+            background: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+        }
+        
+        .toast-content {
+            flex: 1;
+        }
+        
+        .toast-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            transition: color 0.3s ease;
+        }
+        
+        .toast-message {
+            font-size: 12px;
+            color: #6b7280;
+            transition: color 0.3s ease;
+        }
+        
+        body.dark-mode .toast-message {
+            color: #d1d5db;
+        }
+        
+        .close-toast {
+            background: none;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+        }
+        
+        /* Room scheduling */
+        .schedule-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .form-label {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .form-input {
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            background: #f9fafb;
+        }
+        
+        body.dark-mode .form-input {
+            background: #374151;
+            border-color: #4b5563;
+            color: #e5e7eb;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        body.dark-mode .form-input:focus {
+            background: #1f2937;
+        }
+        
+        /* Collaboration Tools */
+        .collab-tools {
+            display: flex;
+            gap: 16px;
+            margin: 20px 0;
+        }
+        
+        .tool-btn {
+            padding: 8px 16px;
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .tool-btn:hover {
+            background: #e5e7eb;
+        }
+        
+        .tool-btn.active {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        
+        body.dark-mode .tool-btn {
+            background: #374151;
+            border-color: #4b5563;
+            color: #e5e7eb;
+        }
+        
+        body.dark-mode .tool-btn:hover {
+            background: #4b5563;
+        }
+        
+        /* Whiteboard */
+        .whiteboard-container {
+            width: 100%;
+            height: 400px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin: 16px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .whiteboard-tools {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: white;
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+        
+        body.dark-mode .whiteboard-tools {
+            background: #1f2937;
+            border: 1px solid #374151;
+        }
+        
+        .tool-option {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .tool-option:hover {
+            background: #f3f4f6;
+        }
+        
+        .tool-option.active {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        body.dark-mode .tool-option:hover {
+            background: #374151;
+        }
+        
+        /* Cursor tracking */
+        .user-cursor {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid;
+            z-index: 5;
+            pointer-events: none;
+        }
+        
+        .cursor-label {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 12px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+        
+        /* Break timer */
+        .break-timer {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 900;
+            display: none;
+        }
+        
+        body.dark-mode .break-timer {
+            background: #1f2937;
+            border-color: #374151;
+        }
+        
+        .break-timer.active {
+            display: block;
+        }
+        
+        .timer-display {
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            margin: 8px 0;
+        }
+        
+        .timer-controls {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+        
+        /* Focus detection */
+        .focus-indicator {
+            position: fixed;
+            top: 100px;
+            right: 24px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 900;
+            display: none;
+        }
+        
+        body.dark-mode .focus-indicator {
+            background: #1f2937;
+            border-color: #374151;
+        }
+        
+        .focus-indicator.active {
+            display: block;
+        }
+        
+        .focus-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 8px 0;
+        }
+        
+        .focus-level {
+            height: 100%;
+            background: #10b981;
+            border-radius: 4px;
+            width: 75%;
+        }
+        
+        /* Leaderboard */
+        .leaderboard {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 24px;
+            margin: 40px 0;
+        }
+        
+        body.dark-mode .leaderboard {
+            background: #1f2937;
+            border-color: #374151;
+        }
+        
+        .leaderboard-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .leaderboard-icon {
+            width: 40px;
+            height: 40px;
+            background: #f59e0b;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+        
+        .leaderboard-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .leaderboard-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 8px;
+            background: #f9fafb;
+        }
+        
+        body.dark-mode .leaderboard-item {
+            background: #374151;
+        }
+        
+        .leaderboard-rank {
+            width: 24px;
+            height: 24px;
+            background: #e5e7eb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 12px;
+        }
+        
+        .leaderboard-item:nth-child(1) .leaderboard-rank {
+            background: #f59e0b;
+            color: white;
+        }
+        
+        .leaderboard-item:nth-child(2) .leaderboard-rank {
+            background: #9ca3af;
+            color: white;
+        }
+        
+        .leaderboard-item:nth-child(3) .leaderboard-rank {
+            background: #b45309;
+            color: white;
+        }
+        
+        .leaderboard-user {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .leaderboard-score {
+            font-weight: 600;
+            color: #3b82f6;
+        }
+        
+        /* Room Templates */
+        .room-templates {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 16px 0;
+        }
+        
+        .template-card {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .template-card:hover {
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+        }
+        
+        body.dark-mode .template-card {
+            background: #374151;
+            border-color: #4b5563;
+        }
+        
+        .template-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .template-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .template-desc {
+            font-size: 14px;
+            color: #6b7280;
+        }
+        
+        body.dark-mode .template-desc {
+            color: #d1d5db;
+        }
+        
+        /* Permissions */
+        .permissions-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 16px 0;
+        }
+        
+        .permission-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* Recording indicator */
+        .recording-indicator {
+            position: fixed;
+            top: 100px;
+            left: 24px;
+            background: #ef4444;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 900;
+            display: none;
+        }
+        
+        .recording-indicator.active {
+            display: flex;
+        }
+        
+        .recording-dot {
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            animation: pulse 1s infinite;
+        }
+        
+        /* Virtual study groups */
+        .study-groups {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin: 16px 0;
+        }
+        
+        .group-card {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            transition: all 0.2s ease;
+        }
+        
+        .group-card:hover {
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+        }
+        
+        body.dark-mode .group-card {
+            background: #374151;
+            border-color: #4b5563;
+        }
+        
+        .group-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .group-icon {
+            width: 40px;
+            height: 40px;
+            background: #e0e7ff;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3730a3;
+            font-size: 18px;
+        }
+        
+        .group-name {
+            font-weight: 600;
+        }
+        
+        .group-members {
+            display: flex;
+            align-items: center;
+            margin-top: 12px;
+        }
+        
+        /* WebRTC status */
+        .webrtc-status {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 14px;
+            z-index: 900;
+        }
+        
+        body.dark-mode .webrtc-status {
+            background: #1f2937;
+            border-color: #374151;
+        }
+        
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+        }
+        
+        /* Offline indicator */
+        .offline-indicator {
+            position: fixed;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ef4444;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .offline-indicator.active {
+            display: block;
+        }
+        
+        /* Document viewer */
+        .document-viewer {
+            width: 100%;
+            height: 400px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin: 16px 0;
+            display: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .document-tools {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: white;
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+        
+        body.dark-mode .document-tools {
+            background: #1f2937;
+            border: 1px solid #374151;
+        }
+        
+        .document-content {
+            width: 100%;
+            height: 100%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .document-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .document-placeholder {
+            text-align: center;
+            color: #6b7280;
+        }
+        
+        body.dark-mode .document-placeholder {
+            color: #d1d5db;
+        }
+        
+        .upload-area {
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-area:hover {
+            border-color: #3b82f6;
+            background: #f0f7ff;
+        }
+        
+        body.dark-mode .upload-area {
+            border-color: #4b5563;
+        }
+        
+        body.dark-mode .upload-area:hover {
+            border-color: #3b82f6;
+            background: #1e3a8a;
+        }
+        
+        /* Screen share container */
+        .screen-share-container {
+            width: 100%;
+            height: 400px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin: 16px 0;
+            display: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .screen-share-video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #000;
+        }
+        
+        .screen-share-controls {
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            background: rgba(0,0,0,0.7);
+            padding: 8px 16px;
+            border-radius: 20px;
+        }
+        
+        .screen-share-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #ef4444;
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .screen-share-btn:hover {
+            background: #dc2626;
+        }
+        
+        /* File list */
+        .file-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        
+        .file-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px;
+            background: #f9fafb;
+            border-radius: 8px;
+        }
+        
+        body.dark-mode .file-item {
+            background: #374151;
+        }
+        
+        .file-icon {
+            width: 32px;
+            height: 32px;
+            background: #e5e7eb;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        body.dark-mode .file-icon {
+            background: #4b5563;
+        }
+        
+        .file-info {
+            flex: 1;
+        }
+        
+        .file-name {
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+        
+        .file-size {
+            font-size: 12px;
+            color: #6b7280;
+        }
+        
+        body.dark-mode .file-size {
+            color: #d1d5db;
+        }
+        
+        .file-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .file-action-btn {
+            padding: 4px 8px;
+            background: #e5e7eb;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        body.dark-mode .file-action-btn {
+            background: #4b5563;
+            color: #e5e7eb;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="logo"><a href=landingpage.html>FocusHive</a></div>
+                <ul class="nav-links">
+                     <li><a href="dashboard (1).html" class="nav-link">Dashboard</a></li>
+                    <li><a href="Rooms.html" class="nav-link">Study Room</a></li>
+                    <li><a href="chatRoom.html" class="nav-link">Chat Room</a></li>
+                    <li><a href="#ai-buddy" class="nav-link">AI Buddy</a></li>
+                    <li><a href="Analytics.html" class="nav-link">Analytics</a></li>
+                    <li><a href="profile.html" class="nav-link">Profile</a></li>
+                    <li><a href="#settings" class="nav-link">Settings</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <button class="theme-toggle" id="themeToggle">🌙</button>
+                    <a href="login.html" class="btn-secondary">Login</a>
+                    <a href="signUpPage.html" class="btn-primary">Sign Up</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- User Stats -->
+            <div class="user-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">🔥</div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="streakCount">5 days</div>
+                        <div class="stat-label">Study Streak</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="totalHours">27 hours</div>
+                        <div class="stat-label">Focused Time</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="achievementCount">8</div>
+                        <div class="stat-label">Achievements</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1>Study Rooms</h1>
+                <p>Join virtual study sessions with focused students from around the world. Choose your environment and start studying together.</p>
+            </div>
+
+            <!-- Search and Filters -->
+            <div class="search-section">
+                <div class="search-controls">
+                    <input type="text" class="search-input" placeholder="Search study rooms..." id="searchInput">
+                    <select class="filter-select" id="subjectFilter">
+                        <option value="">Subject</option>
+                        <option value="mathematics">Mathematics</option>
+                        <option value="literature">Literature</option>
+                        <option value="science">Science</option>
+                        <option value="mixed">Mixed</option>
+                    </select>
+                    <select class="filter-select" id="typeFilter">
+                        <option value="">Study Type</option>
+                        <option value="focused-study">Focused Study</option>
+                        <option value="silent-study">Silent Study</option>
+                        <option value="group-study">Group Study</option>
+                        <option value="intensive-study">Intensive Study</option>
+                        <option value="timed-sessions">Timed Sessions</option>
+                        <option value="late-night">Late Night</option>
+                    </select>
+                </div>
+                <button class="toggle-filters" id="toggleFilters">
+                    <i class="fas fa-sliders-h"></i> Advanced Filters
+                </button>
+                <div class="advanced-filters" id="advancedFilters">
+                    <div class="form-group">
+                        <label class="form-label">Minimum Participants</label>
+                        <input type="range" min="0" max="50" value="0" class="form-input" id="minParticipants">
+                        <span id="minParticipantsValue">0</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Maximum Participants</label>
+                        <input type="range" min="10" max="100" value="100" class="form-input" id="maxParticipants">
+                        <span id="maxParticipantsValue">100</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Music Preference</label>
+                        <select class="form-input" id="musicFilter">
+                            <option value="">Any</option>
+                            <option value="lo-fi">Lo-fi</option>
+                            <option value="classical">Classical</option>
+                            <option value="nature">Nature Sounds</option>
+                            <option value="ambient">Ambient</option>
+                            <option value="silent">Silent</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Session Duration</label>
+                        <select class="form-input" id="durationFilter">
+                            <option value="">Any</option>
+                            <option value="short">Short (< 30 min)</option>
+                            <option value="medium">Medium (30-60 min)</option>
+                            <option value="long">Long (> 60 min)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Features Section -->
+            <div class="ai-features">
+                <div class="ai-header">
+                    <div class="ai-icon">🤖</div>
+                    <h3 class="ai-title">AI-Powered Study Features</h3>
+                </div>
+                <div class="ai-cards">
+                    <div class="ai-card">
+                        <h4 class="ai-card-title"><i class="fas fa-brain"></i> Smart Recommendations</h4>
+                        <p class="ai-card-desc">Get personalized room suggestions based on your study habits and preferences.</p>
+                    </div>
+                    <div class="ai-card">
+                        <h4 class="ai-card-title"><i class="fas fa-chart-line"></i> Focus Analytics</h4>
+                        <p class="ai-card-desc">Track your concentration levels and get insights to improve your study sessions.</p>
+                    </div>
+                    <div class="ai-card">
+                        <h4 class="ai-card-title"><i class="fas fa-robot"></i> AI Study Buddy</h4>
+                        <p class="ai-card-desc">Get help with questions and explanations without leaving your study room.</p>
+                    </div>
+                    <div class="ai-card">
+                        <h4 class="ai-card-title"><i class="fas fa-camera"></i> Focus Detection</h4>
+                        <p class="ai-card-desc">Webcam analysis to track your focus levels and provide distraction alerts.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Leaderboard Section -->
+            <div class="leaderboard">
+                <div class="leaderboard-header">
+                    <div class="leaderboard-icon">🏆</div>
+                    <h3 class="leaderboard-title">Weekly Leaderboard</h3>
+                </div>
+                <div class="leaderboard-list">
+                    <div class="leaderboard-item">
+                        <div class="leaderboard-rank">1</div>
+                        <div class="leaderboard-user">
+                            <div class="avatar">S</div>
+                            <span>StudyMaster42</span>
+                        </div>
+                        <div class="leaderboard-score">32h</div>
+                    </div>
+                    <div class="leaderboard-item">
+                        <div class="leaderboard-rank">2</div>
+                        <div class="leaderboard-user">
+                            <div class="avatar">A</div>
+                            <span>AcademicAce</span>
+                        </div>
+                        <div class="leaderboard-score">28h</div>
+                    </div>
+                    <div class="leaderboard-item">
+                        <div class="leaderboard-rank">3</div>
+                        <div class="leaderboard-user">
+                            <div class="avatar">F</div>
+                            <span>FocusedFuture</span>
+                        </div>
+                        <div class="leaderboard-score">25h</div>
+                    </div>
+                    <div class="leaderboard-item">
+                        <div class="leaderboard-rank">4</div>
+                        <div class="leaderboard-user">
+                            <div class="avatar">Y</div>
+                            <span>You</span>
+                        </div>
+                        <div class="leaderboard-score">22h</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Study Rooms Grid -->
+            <div class="rooms-grid" id="roomsGrid">
+                <!-- Rooms will be populated by JavaScript -->
+            </div>
+
+            <!-- Create Room Section -->
+            <div class="create-room-section">
+                <div class="create-room-icon">📖</div>
+                <h3>Want to create your own study room?</h3>
+                <p>Set up a custom environment with your preferred settings and invite friends.</p>
+                <button class="btn-create" onclick="showCreateRoomModal()">Create New Room</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Room Preview Modal -->
+    <div class="modal" id="roomPreviewModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="previewRoomTitle">Room Preview</h3>
+                <button class="close-modal" onclick="closeModal('roomPreviewModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="room-details">
+                    <div class="room-detail">
+                        <span class="room-detail-label">Subject</span>
+                        <span class="room-detail-value" id="previewSubject">Mathematics</span>
+                    </div>
+                    <div class="room-detail">
+                        <span class="room-detail-label">Type</span>
+                        <span class="room-detail-value" id="previewType">Focused Study</span>
+                    </div>
+                    <div class="room-detail">
+                        <span class="room-detail-label">Music</span>
+                        <span class="room-detail-value" id="previewMusic">Lo-fi Beats</span>
+                    </div>
+                    <div class="room-detail">
+                        <span class="room-detail-label">Avg Time</span>
+                        <span class="room-detail-value" id="previewAvgTime">45 min</span>
+                    </div>
+                </div>
+                <div id="previewParticipants" style="margin: 20px 0;">
+                    <h4>Current Participants (24)</h4>
+                    <div class="participants-avatars" style="margin-top: 10px;">
+                        <div class="avatar">A</div>
+                        <div class="avatar">S</div>
+                        <div class="avatar">M</div>
+                        <div class="avatar">J</div>
+                        <div class="avatar">+20</div>
+                    </div>
+                </div>
+                <div>
+                    <h4>Room Rules</h4>
+                    <ul style="margin: 10px 0 10px 20px; font-size: 14px;">
+                        <li>Keep microphones muted when not speaking</li>
+                        <li>Respect others' focus time</li>
+                        <li>Use the chat for questions</li>
+                        <li>Follow the Pomodoro timer schedule</li>
+                    </ul>
+                </div>
+                
+                <!-- Collaboration Tools Preview -->
+                <div style="margin: 20px 0;">
+                    <h4>Collaboration Tools</h4>
+                    <div class="collab-tools">
+                        <div class="tool-btn">
+                            <i class="fas fa-pencil-alt"></i> Whiteboard
+                        </div>
+                        <div class="tool-btn">
+                            <i class="fas fa-file-alt"></i> Document
+                        </div>
+                        <div class="tool-btn">
+                            <i class="fas fa-desktop"></i> Screen Share
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a class="btn-secondary" href="studyRoom.html">Join Room</a>
+                <button class="btn-primary" onclick="joinRoomFromPreview()">Preview Room</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Room Modal -->
+    <div class="modal" id="createRoomModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Create New Study Room</h3>
+                <button class="close-modal" onclick="closeModal('createRoomModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Room Templates -->
+                <div style="margin-bottom: 20px;">
+                    <h4>Room Templates</h4>
+                    <div class="room-templates">
+                        <div class="template-card" onclick="selectTemplate('focused')">
+                            <div class="template-icon">🎯</div>
+                            <div class="template-name">Focused Study</div>
+                            <div class="template-desc">Quiet environment for deep work</div>
+                        </div>
+                        <div class="template-card" onclick="selectTemplate('group')">
+                            <div class="template-icon">👥</div>
+                            <div class="template-name">Group Collaboration</div>
+                            <div class="template-desc">For team projects and discussions</div>
+                        </div>
+                        <div class="template-card" onclick="selectTemplate('pomodoro')">
+                            <div class="template-icon">⏱️</div>
+                            <div class="template-name">Pomodoro Timer</div>
+                            <div class="template-desc">Structured timed sessions</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="schedule-form">
+                    <div class="form-group">
+                        <label class="form-label">Room Name</label>
+                        <input type="text" class="form-input" placeholder="e.g., Math Study Group" id="roomName">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Subject</label>
+                        <select class="form-input" id="newRoomSubject">
+                            <option value="mathematics">Mathematics</option>
+                            <option value="literature">Literature</option>
+                            <option value="science">Science</option>
+                            <option value="mixed">Mixed</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Study Type</label>
+                        <select class="form-input" id="newRoomType">
+                            <option value="Focused Study">Focused Study</option>
+                            <option value="Silent Study">Silent Study</option>
+                            <option value="Group Study">Group Study</option>
+                            <option value="Intensive Study">Intensive Study</option>
+                            <option value="Timed Sessions">Timed Sessions</option>
+                            <option value="Late Night">Late Night</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Background Sound</label>
+                        <select class="form-input" id="newRoomMusic">
+                            <option value="Lo-fi Beats">Lo-fi Beats</option>
+                            <option value="Nature Sounds">Nature Sounds</option>
+                            <option value="Ambient">Ambient</option>
+                            <option value="Classical">Classical</option>
+                            <option value="Focus Beats">Focus Beats</option>
+                            <option value="Chill Hop">Chill Hop</option>
+                            <option value="Silent">Silent</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Session Duration (minutes)</label>
+                        <input type="number" class="form-input" value="60" min="15" max="240" id="newRoomDuration">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Max Participants</label>
+                        <input type="number" class="form-input" value="25" min="2" max="50" id="newRoomMaxParticipants">
+                    </div>
+                </div>
+                
+                <!-- Room Permissions -->
+                <div style="margin-top: 20px;">
+                    <h4>Room Permissions</h4>
+                    <div class="permissions-list">
+                        <div class="permission-item">
+                            <input type="checkbox" id="allowScreenShare" checked>
+                            <label for="allowScreenShare">Allow screen sharing</label>
+                        </div>
+                        <div class="permission-item">
+                            <input type="checkbox" id="allowWhiteboard" checked>
+                            <label for="allowWhiteboard">Allow whiteboard collaboration</label>
+                        </div>
+                        <div class="permission-item">
+                            <input type="checkbox" id="requireConsent" checked>
+                            <label for="requireConsent">Require consent for recording</label>
+                        </div>
+                        <div class="permission-item">
+                            <input type="checkbox" id="moderateChat">
+                            <label for="moderateChat">Moderate chat messages</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <label style="display: flex; align-items: center; gap: 8px;">
+                        <input type="checkbox" id="isRecurring">
+                        <span>Recurring session</span>
+                    </label>
+                    <div id="recurringOptions" style="margin-top: 10px; display: none;">
+                        <div class="form-group">
+                            <label class="form-label">Frequency</label>
+                            <select class="form-input" id="recurringFrequency">
+                                <option value="daily">Daily</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="weekdays">Weekdays</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal('createRoomModal')">Cancel</button>
+                <button class="btn-primary" onclick="createNewRoom()">Create Room</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Study Room Interface (Hidden by default) -->
+    <div class="modal" id="studyRoomInterface" style="display: none; align-items: stretch; justify-content: stretch;">
+        <div class="modal-content" style="width: 100%; height: 100%; max-width: none; max-height: none; border-radius: 0;">
+            <div class="modal-header">
+                <h3 class="modal-title" id="currentRoomTitle">Mathematics Focus Room</h3>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="recording-indicator" id="recordingIndicator">
+                        <div class="recording-dot"></div>
+                        <span>Recording</span>
+                    </div>
+                    <button class="btn-secondary" onclick="toggleBreakTimer()">
+                        <i class="fas fa-coffee"></i> Break
+                    </button>
+                    <button class="btn-secondary" onclick="toggleFocusDetection()">
+                        <i class="fas fa-brain"></i> Focus
+                    </button>
+                    <button class="close-modal" onclick="exitRoom()">&times;</button>
+                </div>
+            </div>
+            <div class="modal-body" style="display: flex; height: calc(100% - 130px); padding: 0;">
+                <!-- Video/Audio Participants -->
+                <div style="width: 240px; border-right: 1px solid #e5e7eb; padding: 16px; overflow-y: auto;">
+                    <h4 style="margin-bottom: 16px;">Participants (24)</h4>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <div class="avatar">Y</div>
+                            <span>You</span>
+                            <div style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; margin-left: auto;"></div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <div class="avatar">S</div>
+                            <span>StudyMaster42</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <div class="avatar">A</div>
+                            <span>AcademicAce</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <div class="avatar">F</div>
+                            <span>FocusedFuture</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <div class="avatar">M</div>
+                            <span>MathWizard</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Uploaded Files List -->
+                    <div style="margin-top: 20px;">
+                        <h4 style="margin-bottom: 12px;">Shared Files</h4>
+                        <div class="file-list" id="fileList">
+                            <!-- Files will be added here dynamically -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Main Content Area -->
+                <div style="flex: 1; display: flex; flex-direction: column;">
+                    <!-- Collaboration Tools -->
+                    <div style="padding: 16px; border-bottom: 1px solid #e5e7eb;">
+                        <div class="collab-tools">
+                            <div class="tool-btn active" onclick="activateTool('whiteboard')">
+                                <i class="fas fa-pencil-alt"></i> Whiteboard
+                            </div>
+                            <div class="tool-btn" onclick="activateTool('document')">
+                                <i class="fas fa-file-alt"></i> Document
+                            </div>
+                            <div class="tool-btn" onclick="activateTool('screenshare')">
+                                <i class="fas fa-desktop"></i> Screen Share
+                            </div>
+                            <div class="tool-btn" onclick="showChat()">
+                                <i class="fas fa-comments"></i> Chat
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Whiteboard Container -->
+                    <div class="whiteboard-container" id="whiteboardContainer">
+                        <div class="whiteboard-tools">
+                            <div class="tool-option active" title="Pen">
+                                <i class="fas fa-pen"></i>
+                            </div>
+                            <div class="tool-option" title="Eraser">
+                                <i class="fas fa-eraser"></i>
+                            </div>
+                            <div class="tool-option" title="Text">
+                                <i class="fas fa-font"></i>
+                            </div>
+                            <div class="tool-option" title="Shape">
+                                <i class="fas fa-square"></i>
+                            </div>
+                            <div class="tool-option" title="Color">
+                                <i class="fas fa-palette"></i>
+                            </div>
+                        </div>
+                        <canvas id="whiteboardCanvas" width="1000" height="600"></canvas>
+                        
+                        <!-- User cursors for demonstration -->
+                        <div class="user-cursor" style="top: 100px; left: 200px; border-color: #f59e0b;">
+                            <div class="cursor-label" style="background: #f59e0b; color: white;">StudyMaster42</div>
+                        </div>
+                        <div class="user-cursor" style="top: 150px; left: 300px; border-color: #8b5cf6;">
+                            <div class="cursor-label" style="background: #8b5cf6; color: white;">AcademicAce</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Document Viewer Container -->
+                    <div class="document-viewer" id="documentContainer">
+                        <div class="document-tools">
+                            <div class="tool-option" title="Upload Document" onclick="document.getElementById('fileInput').click()">
+                                <i class="fas fa-upload"></i>
+                            </div>
+                            <div class="tool-option" title="Download">
+                                <i class="fas fa-download"></i>
+                            </div>
+                            <div class="tool-option" title="Zoom In">
+                                <i class="fas fa-search-plus"></i>
+                            </div>
+                            <div class="tool-option" title="Zoom Out">
+                                <i class="fas fa-search-minus"></i>
+                            </div>
+                        </div>
+                        <div class="document-content" id="documentContent">
+                            <div class="document-placeholder">
+                                <i class="fas fa-file-upload" style="font-size: 48px; margin-bottom: 16px;"></i>
+                                <p>No document uploaded</p>
+                                <p>Click the upload button or drag and drop a file</p>
+                            </div>
+                        </div>
+                        <input type="file" id="fileInput" style="display: none;" accept=".pdf,.doc,.docx,.ppt,.pptx,.txt" onchange="handleFileUpload(this.files)">
+                    </div>
+                    
+                    <!-- Screen Share Container -->
+                    <div class="screen-share-container" id="screenShareContainer">
+                        <video class="screen-share-video" id="screenShareVideo" autoplay muted></video>
+                        <div class="screen-share-controls">
+                            <button class="screen-share-btn" id="stopScreenShareBtn" onclick="stopScreenShare()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Chat Panel (Hidden by default) -->
+                <div id="chatPanel" style="width: 300px; border-left: 1px solid #e5e7eb; display: none; flex-direction: column;">
+                    <div style="padding: 16px; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center;">
+                        <h4>Chat</h4>
+                        <button class="close-modal" onclick="hideChat()">&times;</button>
+                    </div>
+                    <div style="flex: 1; padding: 16px; overflow-y: auto;">
+                        <div style="margin-bottom: 12px;">
+                            <div style="font-weight: 600;">StudyMaster42</div>
+                            <div style="background: #f3f4f6; padding: 8px; border-radius: 8px; margin-top: 4px;">
+                                Has anyone solved problem 15 on the worksheet?
+                            </div>
+                            <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">2 min ago</div>
+                        </div>
+                        <div style="margin-bottom: 12px;">
+                            <div style="font-weight: 600;">AcademicAce</div>
+                            <div style="background: #f3f4f6; padding: 8px; border-radius: 8px; margin-top: 4px;">
+                                I got 42.5 degrees for the angle, not sure if that's right though
+                            </div>
+                            <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">1 min ago</div>
+                        </div>
+                    </div>
+                    <div style="padding: 16px; border-top: 1px solid #e5e7eb;">
+                        <div style="display: flex; gap: 8px;">
+                            <input type="text" class="search-input" placeholder="Type a message..." style="flex: 1;">
+                            <button class="btn-primary">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Break Timer -->
+    <div class="break-timer" id="breakTimer">
+        <h4>Break Time</h4>
+        <div class="timer-display" id="timerDisplay">05:00</div>
+        <div class="timer-controls">
+            <button class="btn-secondary" onclick="pauseTimer()">Pause</button>
+            <button class="btn-primary" onclick="endBreak()">End Break</button>
+        </div>
+    </div>
+
+    <!-- Focus Detection Indicator -->
+    <div class="focus-indicator" id="focusIndicator">
+        <h4>Focus Level</h4>
+        <div class="focus-bar">
+            <div class="focus-level" id="focusLevel"></div>
+        </div>
+        <div style="text-align: center; font-size: 14px; margin-top: 8px;">
+            <span id="focusPercentage">75%</span> Focused
+        </div>
+    </div>
+
+    <!-- WebRTC Status -->
+    <div class="webrtc-status">
+        <div class="status-indicator"></div>
+        <span>WebRTC Connected</span>
+    </div>
+
+    <!-- Offline Indicator -->
+    <div class="offline-indicator" id="offlineIndicator">
+        <i class="fas fa-wifi-slash"></i> You are currently offline
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="toast" id="notificationToast">
+        <div class="toast-icon">✓</div>
+        <div class="toast-content">
+            <div class="toast-title" id="toastTitle">Success</div>
+            <div class="toastMessage" id="toastMessage">Room created successfully</div>
+        </div>
+        <button class="close-toast" onclick="hideToast()">&times;</button>
+    </div>
+
+    <script>
+        // Study rooms data
+        const studyRooms = [
+            {
+                id: 1,
+                title: "Mathematics Focus Room",
+                participants: 24,
+                subject: "Mathematics",
+                type: "Focused Study",
+                music: "Lo-fi Beats",
+                avgTime: "45 min",
+                badge: "intensive",
+                active: true,
+                features: ["whiteboard", "document", "screenshare"]
+            },
+            {
+                id: 2,
+                title: "Quiet Reading Corner",
+                participants: 18,
+                subject: "Literature",
+                type: "Silent Study",
+                music: "Nature Sounds",
+                avgTime: "90 min",
+                badge: "peaceful",
+                active: true,
+                features: ["document"]
+            },
+            {
+                id: 3,
+                title: "Science Study Lab",
+                participants: 31,
+                subject: "Sciences",
+                type: "Group Study",
+                music: "Ambient",
+                avgTime: "60 min",
+                badge: "collaborative",
+                active: true,
+                features: ["whiteboard", "document", "screenshare"]
+            },
+            {
+                id: 4,
+                title: "Pomodoro Central",
+                participants: 42,
+                subject: "Mixed",
+                type: "Timed Sessions",
+                music: "Focus Beats",
+                avgTime: "25 min",
+                badge: "structured",
+                active: true,
+                features: ["whiteboard", "document"]
+            },
+            {
+                id: 5,
+                title: "Exam Preparation Hub",
+                participants: 28,
+                subject: "Mixed",
+                type: "Intensive Study",
+                music: "Classical",
+                avgTime: "120 min",
+                badge: "high-energy",
+                active: true,
+                features: ["whiteboard", "document", "screenshare"]
+            },
+            {
+                id: 6,
+                title: "Night Owl Study",
+                participants: 15,
+                subject: "Mixed",
+                type: "Late Night",
+                music: "Chill Hop",
+                avgTime: "75 min",
+                badge: "relaxed",
+                active: true,
+                features: ["whiteboard", "document"]
+            }
+        ];
+
+        // User data
+        const userData = {
+            streak: 5,
+            totalHours: 27,
+            achievements: 8,
+            focusScores: [],
+            studyGroups: [],
+            uploadedFiles: []
+        };
+
+        // Screen sharing state
+        let screenStream = null;
+        let isSharingScreen = false;
+
+        // Function to create room card HTML
+        function createRoomCard(room) {
+            const badgeClass = `badge-${room.badge}`;
+            const badgeText = room.badge.charAt(0).toUpperCase() + room.badge.slice(1).replace('-', ' ');
+            
+            return `
+                <div class="room-card" data-subject="${room.subject.toLowerCase()}" data-type="${room.type.toLowerCase().replace(' ', '-')}" data-music="${room.music.toLowerCase().replace(' ', '-')}" data-duration="${parseInt(room.avgTime)}" data-participants="${room.participants}">
+                    <div class="room-header">
+                        <div>
+                            <h3 class="room-title">${room.title}</h3>
+                            <div class="room-participants">
+                                👥 ${room.participants} active
+                                <div class="participants-avatars">
+                                    <div class="avatar">A</div>
+                                    <div class="avatar">S</div>
+                                    <div class="avatar">M</div>
+                                    <div class="avatar">+</div>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="room-badge ${badgeClass}">⭐ ${badgeText}</span>
+                    </div>
+                    <div class="room-details">
+                        <div class="room-detail">
+                            <span class="room-detail-label">Subject</span>
+                            <span class="room-detail-value">${room.subject}</span>
+                        </div>
+                        <div class="room-detail">
+                            <span class="room-detail-label">Type</span>
+                            <span class="room-detail-value">${room.type}</span>
+                        </div>
+                        <div class="room-detail">
+                            <span class="room-detail-label">Music</span>
+                            <span class="room-detail-value">${room.music}</span>
+                        </div>
+                        <div class="room-detail">
+                            <span class="room-detail-label">Avg Time</span>
+                            <span class="room-detail-value">${room.avgTime}</span>
+                        </div>
+                    </div>
+                    <div class="room-footer">
+                        <button class="join-btn" onclick="previewRoom(${room.id})">Preview Room</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Function to render rooms
+        function renderRooms(rooms = studyRooms) {
+            const roomsGrid = document.getElementById('roomsGrid');
+            roomsGrid.innerHTML = rooms.map(room => createRoomCard(room)).join('');
+            addCardInteractions();
+        }
+
+        // Function to filter rooms
+        function filterRooms() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const subjectFilter = document.getElementById('subjectFilter').value.toLowerCase();
+            const typeFilter = document.getElementById('typeFilter').value.toLowerCase();
+            const minParticipantsValue = parseInt(document.getElementById('minParticipants').value);
+            const maxParticipantsValue = parseInt(document.getElementById('maxParticipants').value);
+            const musicFilterValue = document.getElementById('musicFilter').value.toLowerCase();
+            const durationFilterValue = document.getElementById('durationFilter').value;
+            
+            const filteredRooms = studyRooms.filter(room => {
+                const matchesSearch = room.title.toLowerCase().includes(searchTerm) ||
+                                    room.subject.toLowerCase().includes(searchTerm);
+                const matchesSubject = !subjectFilter || room.subject.toLowerCase().includes(subjectFilter);
+                const matchesType = !typeFilter || room.type.toLowerCase().replace(' ', '-') === typeFilter;
+                const matchesParticipants = room.participants >= minParticipantsValue && 
+                                          room.participants <= maxParticipantsValue;
+                const matchesMusic = !musicFilterValue || room.music.toLowerCase().includes(musicFilterValue);
+                
+                let matchesDuration = true;
+                if (durationFilterValue) {
+                    const avgTime = parseInt(room.avgTime);
+                    if (durationFilterValue === 'short') {
+                        matchesDuration = avgTime < 30;
+                    } else if (durationFilterValue === 'medium') {
+                        matchesDuration = avgTime >= 30 && avgTime <= 60;
+                    } else if (durationFilterValue === 'long') {
+                        matchesDuration = avgTime > 60;
+                    }
+                }
+                
+                return matchesSearch && matchesSubject && matchesType && 
+                       matchesParticipants && matchesMusic && matchesDuration;
+            });
+            
+            renderRooms(filteredRooms);
+        }
+
+        // Event listeners for filters
+        document.getElementById('searchInput').addEventListener('input', filterRooms);
+        document.getElementById('subjectFilter').addEventListener('change', filterRooms);
+        document.getElementById('typeFilter').addEventListener('change', filterRooms);
+
+        // Function to join a room
+        function joinRoom(roomTitle, roomId) {
+            // Add loading effect
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = 'Joining...';
+            button.disabled = true;
+
+            setTimeout(() => {
+                // Show the study room interface
+                document.getElementById('studyRoomInterface').style.display = 'flex';
+                document.getElementById('currentRoomTitle').textContent = roomTitle;
+                
+                // Initialize collaboration tools
+                initializeWhiteboard();
+                initializeWebRTC();
+                initializeDocumentViewer();
+                
+                // Start focus detection
+                startFocusDetection();
+                
+                button.textContent = originalText;
+                button.disabled = false;
+                
+                // Update participant count
+                const room = studyRooms.find(r => r.id === roomId);
+                if (room) {
+                    room.participants += 1;
+                    renderRooms();
+                }
+            }, 1500);
+        }
+
+        // Function to create a new room
+        function createRoom() {
+            showCreateRoomModal();
+        }
+
+        // Add some interactivity to room cards
+        function addCardInteractions() {
+            const roomCards = document.querySelectorAll('.room-card');
+            
+            roomCards.forEach(card => {
+                // Add click animation
+                card.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('join-btn')) return;
+                    
+                    const roomId = parseInt(this.getAttribute('data-id'));
+                    previewRoom(roomId);
+                });
+
+                // Add hover effect for participant count
+                const participantsElement = card.querySelector('.room-participants');
+                participantsElement.addEventListener('mouseenter', function() {
+                    this.style.color = '#3b82f6';
+                });
+                
+                participantsElement.addEventListener('mouseleave', function() {
+                    this.style.color = '';
+                });
+            });
+        }
+
+        // Simulate real-time participant updates
+        function updateParticipantCounts() {
+            studyRooms.forEach((room, index) => {
+                // Randomly adjust participant count by ±3
+                const change = Math.floor(Math.random() * 7) - 3;
+                room.participants = Math.max(5, room.participants + change);
+            });
+            
+            renderRooms();
+        }
+
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            themeToggle.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        });
+        
+        // Check for saved theme preference
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+            themeToggle.textContent = '☀️';
+        }
+        
+        // Advanced filters toggle
+        const toggleFilters = document.getElementById('toggleFilters');
+        const advancedFilters = document.getElementById('advancedFilters');
+        
+        toggleFilters.addEventListener('click', () => {
+            advancedFilters.classList.toggle('active');
+            toggleFilters.innerHTML = advancedFilters.classList.contains('active') ? 
+                '<i class="fas fa-times"></i> Close Filters' : 
+                '<i class="fas fa-sliders-h"></i> Advanced Filters';
+        });
+        
+        // Update range input values
+        const minParticipants = document.getElementById('minParticipants');
+        const maxParticipants = document.getElementById('maxParticipants');
+        const minParticipantsValue = document.getElementById('minParticipantsValue');
+        const maxParticipantsValue = document.getElementById('maxParticipantsValue');
+        
+        minParticipants.addEventListener('input', () => {
+            minParticipantsValue.textContent = minParticipants.value;
+            filterRooms();
+        });
+        
+        maxParticipants.addEventListener('input', () => {
+            maxParticipantsValue.textContent = maxParticipants.value;
+            filterRooms();
+        });
+        
+        // Additional filter options
+        const musicFilter = document.getElementById('musicFilter');
+        const durationFilter = document.getElementById('durationFilter');
+        
+        musicFilter.addEventListener('change', filterRooms);
+        durationFilter.addEventListener('change', filterRooms);
+        
+        // Room preview functionality
+        let currentPreviewRoom = null;
+        
+        function previewRoom(roomId) {
+            const room = studyRooms.find(r => r.id === roomId);
+            if (!room) return;
+            
+            currentPreviewRoom = room;
+            
+            document.getElementById('previewRoomTitle').textContent = room.title;
+            document.getElementById('previewSubject').textContent = room.subject;
+            document.getElementById('previewType').textContent = room.type;
+            document.getElementById('previewMusic').textContent = room.music;
+            document.getElementById('previewAvgTime').textContent = room.avgTime;
+            document.getElementById('previewParticipants').querySelector('h4').textContent = `Current Participants (${room.participants})`;
+            
+            openModal('roomPreviewModal');
+        }
+        
+        function joinRoomFromPreview() {
+            if (currentPreviewRoom) {
+                joinRoom(currentPreviewRoom.title, currentPreviewRoom.id);
+                closeModal('roomPreviewModal');
+            }
+        }
+        
+        // Modal functions
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        function showCreateRoomModal() {
+            openModal('createRoomModal');
+        }
+        
+        // Recurring session toggle
+        document.getElementById('isRecurring').addEventListener('change', function() {
+            document.getElementById('recurringOptions').style.display = this.checked ? 'block' : 'none';
+        });
+        
+        // Create new room function
+        function createNewRoom() {
+            const roomName = document.getElementById('roomName').value;
+            const subject = document.getElementById('newRoomSubject').value;
+            const type = document.getElementById('newRoomType').value;
+            const music = document.getElementById('newRoomMusic').value;
+            const duration = document.getElementById('newRoomDuration').value;
+            const maxParticipants = document.getElementById('newRoomMaxParticipants').value;
+            const isRecurring = document.getElementById('isRecurring').checked;
+            const frequency = document.getElementById('recurringFrequency').value;
+            
+            if (!roomName) {
+                showToast('Error', 'Please enter a room name');
+                return;
+            }
+            
+            // Create a new room object
+            const newRoom = {
+                id: studyRooms.length + 1,
+                title: roomName,
+                participants: 1, // Starting with just the creator
+                subject: subject.charAt(0).toUpperCase() + subject.slice(1),
+                type: type,
+                music: music,
+                avgTime: `${duration} min`,
+                badge: getBadgeType(type),
+                active: true,
+                features: ["whiteboard", "document", "screenshare"]
+            };
+            
+            studyRooms.unshift(newRoom);
+            renderRooms();
+            closeModal('createRoomModal');
+            
+            // Show success message
+            showToast('Success', `"${roomName}" created successfully!`);
+            
+            // Reset form
+            document.getElementById('roomName').value = '';
+        }
+        
+        function getBadgeType(roomType) {
+            const typeMap = {
+                'Focused Study': 'intensive',
+                'Silent Study': 'peaceful',
+                'Group Study': 'collaborative',
+                'Intensive Study': 'high-energy',
+                'Timed Sessions': 'structured',
+                'Late Night': 'relaxed'
+            };
+            
+            return typeMap[roomType] || 'intensive';
+        }
+        
+        // Toast notification function
+        function showToast(title, message) {
+            const toast = document.getElementById('notificationToast');
+            document.getElementById('toastTitle').textContent = title;
+            document.getElementById('toastMessage').textContent = message;
+            
+            toast.classList.add('visible');
+            
+            setTimeout(() => {
+                hideToast();
+            }, 3000);
+        }
+        
+        function hideToast() {
+            document.getElementById('notificationToast').classList.remove('visible');
+        }
+        
+        // Add loading animation when filtering
+        let filterTimeout;
+        function debounceFilter() {
+            clearTimeout(filterTimeout);
+            document.getElementById('roomsGrid').classList.add('loading');
+            
+            filterTimeout = setTimeout(() => {
+                filterRooms();
+                document.getElementById('roomsGrid').classList.remove('loading');
+            }, 300);
+        }
+
+        // Room template selection
+        function selectTemplate(templateType) {
+            const templates = {
+                'focused': {
+                    type: 'Focused Study',
+                    music: 'Nature Sounds',
+                    duration: 50
+                },
+                'group': {
+                    type: 'Group Study',
+                    music: 'Ambient',
+                    duration: 60
+                },
+                'pomodoro': {
+                    type: 'Timed Sessions',
+                    music: 'Focus Beats',
+                    duration: 25
+                }
+            };
+            
+            const template = templates[templateType];
+            if (template) {
+                document.getElementById('newRoomType').value = template.type;
+                document.getElementById('newRoomMusic').value = template.music;
+                document.getElementById('newRoomDuration').value = template.duration;
+                
+                showToast('Template Applied', `${template.type} template applied successfully`);
+            }
+        }
+
+        // Collaboration tools functions
+        function activateTool(tool) {
+            // Deactivate all tools
+            const toolButtons = document.querySelectorAll('.tool-btn');
+            toolButtons.forEach(btn => btn.classList.remove('active'));
+            
+            // Activate the selected tool
+            event.target.classList.add('active');
+            
+            // Hide all containers first
+            document.getElementById('whiteboardContainer').style.display = 'none';
+            document.getElementById('documentContainer').style.display = 'none';
+            document.getElementById('screenShareContainer').style.display = 'none';
+            
+            // Show appropriate interface
+            if (tool === 'whiteboard') {
+                document.getElementById('whiteboardContainer').style.display = 'block';
+            } else if (tool === 'document') {
+                document.getElementById('documentContainer').style.display = 'block';
+            } else if (tool === 'screenshare') {
+                startScreenShare();
+            }
+        }
+        
+        function showChat() {
+            document.getElementById('chatPanel').style.display = 'flex';
+        }
+        
+        function hideChat() {
+            document.getElementById('chatPanel').style.display = 'none';
+        }
+        
+        // Whiteboard initialization
+        function initializeWhiteboard() {
+            const canvas = document.getElementById('whiteboardCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas to fill container
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            
+            // Set initial drawing style
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = '#000000';
+            
+            // Drawing state
+            let isDrawing = false;
+            let lastX = 0;
+            let lastY = 0;
+            
+            // Drawing functions
+            function startDrawing(e) {
+                isDrawing = true;
+                [lastX, lastY] = [e.offsetX, e.offsetY];
+            }
+            
+            function draw(e) {
+                if (!isDrawing) return;
+                
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(e.offsetX, e.offsetY);
+                ctx.stroke();
+                [lastX, lastY] = [e.offsetX, e.offsetY];
+            }
+            
+            function stopDrawing() {
+                isDrawing = false;
+            }
+            
+            // Event listeners for drawing
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDrawing);
+            canvas.addEventListener('mouseout', stopDrawing);
+        }
+        
+        // Document viewer initialization
+        function initializeDocumentViewer() {
+            const documentContent = document.getElementById('documentContent');
+            const fileInput = document.getElementById('fileInput');
+            
+            // Enable drag and drop
+            documentContent.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                documentContent.style.backgroundColor = '#f0f7ff';
+            });
+            
+            documentContent.addEventListener('dragleave', () => {
+                documentContent.style.backgroundColor = '';
+            });
+            
+            documentContent.addEventListener('drop', (e) => {
+                e.preventDefault();
+                documentContent.style.backgroundColor = '';
+                
+                if (e.dataTransfer.files.length) {
+                    handleFileUpload(e.dataTransfer.files);
+                }
+            });
+        }
+        
+        // Handle file upload
+        function handleFileUpload(files) {
+            if (!files.length) return;
+            
+            const file = files[0];
+            const fileName = file.name;
+            const fileSize = formatFileSize(file.size);
+            const fileType = file.type;
+            
+            // Check if it's a supported file type
+            const supportedTypes = [
+                'application/pdf',
+                'application/msword',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'application/vnd.ms-powerpoint',
+                'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                'text/plain'
+            ];
+            
+            if (!supportedTypes.includes(fileType) && !fileName.endsWith('.pdf') && 
+                !fileName.endsWith('.doc') && !fileName.endsWith('.docx') && 
+                !fileName.endsWith('.ppt') && !fileName.endsWith('.pptx') && 
+                !fileName.endsWith('.txt')) {
+                showToast('Error', 'File type not supported. Please upload PDF, Word, PowerPoint, or text files.');
+                return;
+            }
+            
+            // Add to user's uploaded files
+            userData.uploadedFiles.push({
+                name: fileName,
+                size: fileSize,
+                type: fileType,
+                url: URL.createObjectURL(file),
+                uploadedAt: new Date()
+            });
+            
+            // Update file list
+            updateFileList();
+            
+            // Display the file if it's a PDF or text file
+            if (fileType === 'application/pdf' || fileName.endsWith('.pdf')) {
+                displayPDF(file);
+            } else if (fileType === 'text/plain' || fileName.endsWith('.txt')) {
+                displayTextFile(file);
+            } else {
+                // For other file types, show a download option
+                displayDownloadOnly(file);
+            }
+            
+            showToast('File Uploaded', `${fileName} has been uploaded successfully`);
+        }
+        
+        function displayPDF(file) {
+            const documentContent = document.getElementById('documentContent');
+            documentContent.innerHTML = `
+                <iframe class="document-iframe" src="${URL.createObjectURL(file)}"></iframe>
+            `;
+        }
+        
+        function displayTextFile(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const documentContent = document.getElementById('documentContent');
+                documentContent.innerHTML = `
+                    <pre style="padding: 20px; white-space: pre-wrap; font-family: inherit;">${e.target.result}</pre>
+                `;
+            };
+            reader.readAsText(file);
+        }
+        
+        function displayDownloadOnly(file) {
+            const documentContent = document.getElementById('documentContent');
+            const fileURL = URL.createObjectURL(file);
+            
+            documentContent.innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <i class="fas fa-file" style="font-size: 64px; color: #6b7280; margin-bottom: 20px;"></i>
+                    <h3>${file.name}</h3>
+                    <p>${formatFileSize(file.size)}</p>
+                    <p>This file type can be downloaded but not previewed</p>
+                    <button class="btn-primary" style="margin-top: 20px;" onclick="downloadFile('${fileURL}', '${file.name}')">
+                        <i class="fas fa-download"></i> Download File
+                    </button>
+                </div>
+            `;
+        }
+        
+        function downloadFile(url, fileName) {
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+        
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        function updateFileList() {
+            const fileList = document.getElementById('fileList');
+            fileList.innerHTML = '';
+            
+            userData.uploadedFiles.forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <div class="file-icon">
+                        <i class="fas fa-file"></i>
+                    </div>
+                    <div class="file-info">
+                        <div class="file-name">${file.name}</div>
+                        <div class="file-size">${file.size}</div>
+                    </div>
+                    <div class="file-actions">
+                        <button class="file-action-btn" onclick="viewFile(${index})">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="file-action-btn" onclick="downloadFile('${file.url}', '${file.name}')">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                `;
+                fileList.appendChild(fileItem);
+            });
+        }
+        
+        function viewFile(index) {
+            const file = userData.uploadedFiles[index];
+            
+            // Activate document tool
+            document.querySelectorAll('.tool-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('.tool-btn:nth-child(2)').classList.add('active');
+            
+            // Hide other containers
+            document.getElementById('whiteboardContainer').style.display = 'none';
+            document.getElementById('screenShareContainer').style.display = 'none';
+            
+            // Show document container
+            document.getElementById('documentContainer').style.display = 'block';
+            
+            // Display the file
+            if (file.type === 'application/pdf' || file.name.endsWith('.pdf')) {
+                document.getElementById('documentContent').innerHTML = `
+                    <iframe class="document-iframe" src="${file.url}"></iframe>
+                `;
+            } else if (file.type === 'text/plain' || file.name.endsWith('.txt')) {
+                fetch(file.url)
+                    .then(response => response.text())
+                    .then(text => {
+                        document.getElementById('documentContent').innerHTML = `
+                            <pre style="padding: 20px; white-space: pre-wrap; font-family: inherit;">${text}</pre>
+                        `;
+                    });
+            } else {
+                displayDownloadOnlyFromURL(file.url, file.name, file.size);
+            }
+        }
+        
+        function displayDownloadOnlyFromURL(url, name, size) {
+            document.getElementById('documentContent').innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <i class="fas fa-file" style="font-size: 64px; color: #6b7280; margin-bottom: 20px;"></i>
+                    <h3>${name}</h3>
+                    <p>${size}</p>
+                    <p>This file type can be downloaded but not previewed</p>
+                    <button class="btn-primary" style="margin-top: 20px;" onclick="downloadFile('${url}', '${name}')">
+                        <i class="fas fa-download"></i> Download File
+                    </button>
+                </div>
+            `;
+        }
+        
+        // Screen sharing functions
+        async function startScreenShare() {
+            try {
+                // Check if the browser supports screen sharing
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
+                    showToast('Error', 'Screen sharing is not supported in your browser');
+                    return;
+                }
+                
+                // Request screen capture
+                screenStream = await navigator.mediaDevices.getDisplayMedia({
+                    video: {
+                        cursor: "always"
+                    },
+                    audio: true
+                });
+                
+                // Show the screen share container
+                document.getElementById('screenShareContainer').style.display = 'block';
+                document.getElementById('whiteboardContainer').style.display = 'none';
+                document.getElementById('documentContainer').style.display = 'none';
+                
+                // Set the stream to the video element
+                const videoElement = document.getElementById('screenShareVideo');
+                videoElement.srcObject = screenStream;
+                
+                isSharingScreen = true;
+                
+                // Handle when the user stops sharing
+                screenStream.getTracks().forEach(track => {
+                    track.onended = stopScreenShare;
+                });
+                
+                showToast('Screen Sharing', 'Your screen is now being shared');
+            } catch (error) {
+                console.error('Error starting screen share:', error);
+                showToast('Error', 'Could not start screen sharing');
+            }
+        }
+        
+        function stopScreenShare() {
+            if (screenStream) {
+                screenStream.getTracks().forEach(track => track.stop());
+                screenStream = null;
+            }
+            
+            isSharingScreen = false;
+            document.getElementById('screenShareContainer').style.display = 'none';
+            
+            // Reactivate the whiteboard tool
+            document.querySelectorAll('.tool-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('.tool-btn:first-child').classList.add('active');
+            document.getElementById('whiteboardContainer').style.display = 'block';
+            
+            showToast('Screen Sharing', 'Screen sharing stopped');
+        }
+        
+        // WebRTC initialization (simulated)
+        function initializeWebRTC() {
+            showToast('WebRTC Connected', 'Real-time communication established');
+            
+            // Simulate receiving cursor positions from other users
+            setInterval(() => {
+                // In a real implementation, this would come from WebRTC data channels
+                simulateCursorMovement();
+            }, 2000);
+        }
+        
+        function simulateCursorMovement() {
+            const cursors = document.querySelectorAll('.user-cursor');
+            cursors.forEach(cursor => {
+                const newX = Math.random() * (document.getElementById('whiteboardContainer').offsetWidth - 50);
+                const newY = Math.random() * (document.getElementById('whiteboardContainer').offsetHeight - 50);
+                
+                cursor.style.left = `${newX}px`;
+                cursor.style.top = `${newY}px`;
+            });
+        }
+        
+        // Break timer functions
+        function toggleBreakTimer() {
+            const breakTimer = document.getElementById('breakTimer');
+            breakTimer.classList.toggle('active');
+            
+            if (breakTimer.classList.contains('active')) {
+                startBreakTimer(300); // 5 minutes
+            } else {
+                stopBreakTimer();
+            }
+        }
+        
+        let timerInterval;
+        function startBreakTimer(seconds) {
+            const timerDisplay = document.getElementById('timerDisplay');
+            let timeLeft = seconds;
+            
+            updateTimerDisplay(timeLeft);
+            
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay(timeLeft);
+                
+                if (timeLeft <= 0) {
+                    stopBreakTimer();
+                    showToast('Break Time Over', 'Your break has ended. Time to get back to studying!');
+                }
+            }, 1000);
+        }
+        
+        function updateTimerDisplay(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            document.getElementById('timerDisplay').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+        }
+        
+        function pauseTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                event.target.textContent = 'Resume';
+            } else {
+                const timeParts = document.getElementById('timerDisplay').textContent.split(':');
+                const seconds = parseInt(timeParts[0]) * 60 + parseInt(timeParts[1]);
+                startBreakTimer(seconds);
+                event.target.textContent = 'Pause';
+            }
+        }
+        
+        function endBreak() {
+            stopBreakTimer();
+            document.getElementById('breakTimer').classList.remove('active');
+        }
+        
+        function stopBreakTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+        
+        // Focus detection functions
+        function toggleFocusDetection() {
+            const focusIndicator = document.getElementById('focusIndicator');
+            focusIndicator.classList.toggle('active');
+            
+            if (focusIndicator.classList.contains('active')) {
+                startFocusDetection();
+            } else {
+                stopFocusDetection();
+            }
+        }
+        
+        let focusInterval;
+        function startFocusDetection() {
+            // Simulate focus detection through webcam analysis
+            focusInterval = setInterval(() => {
+                // In a real implementation, this would use computer vision algorithms
+                // to analyze webcam feed for focus indicators
+                const focusLevel = Math.random() * 40 + 60; // Random between 60-100%
+                updateFocusIndicator(focusLevel);
+            }, 3000);
+        }
+        
+        function updateFocusIndicator(level) {
+            const focusLevel = document.getElementById('focusLevel');
+            const focusPercentage = document.getElementById('focusPercentage');
+            
+            focusLevel.style.width = `${level}%`;
+            focusPercentage.textContent = `${Math.round(level)}%`;
+            
+            // Change color based on focus level
+            if (level > 85) {
+                focusLevel.style.background = '#10b981'; // Green
+            } else if (level > 70) {
+                focusLevel.style.background = '#f59e0b'; // Yellow
+            } else {
+                focusLevel.style.background = '#ef4444'; // Red
+                showToast('Distraction Alert', 'You seem distracted. Try focusing on your task.');
+            }
+            
+            // Store focus data for analytics
+            userData.focusScores.push({
+                time: new Date(),
+                score: level
+            });
+        }
+        
+        function stopFocusDetection() {
+            if (focusInterval) {
+                clearInterval(focusInterval);
+                focusInterval = null;
+            }
+        }
+        
+        // Exit room function
+        function exitRoom() {
+            // Stop screen sharing if active
+            if (isSharingScreen) {
+                stopScreenShare();
+            }
+            
+            document.getElementById('studyRoomInterface').style.display = 'none';
+            stopBreakTimer();
+            stopFocusDetection();
+            
+            showToast('Room Left', 'You have left the study room');
+        }
+        
+        // Offline detection
+        function checkOnlineStatus() {
+            const offlineIndicator = document.getElementById('offlineIndicator');
+            
+            if (!navigator.onLine) {
+                offlineIndicator.classList.add('active');
+            } else {
+                offlineIndicator.classList.remove('active');
+            }
+        }
+        
+        window.addEventListener('online', checkOnlineStatus);
+        window.addEventListener('offline', checkOnlineStatus);
+
+        // Service Worker Registration (simulated)
+        if ('serviceWorker' in navigator) {
+            // In a real implementation, you would register your service worker here
+            console.log('Service Worker API is supported');
+        }
+        
+        // WebSocket Connection (simulated)
+        function connectWebSocket() {
+            // In a real implementation, you would establish a WebSocket connection here
+            console.log('WebSocket connection established (simulated)');
+            
+            // Simulate receiving real-time updates
+            setInterval(() => {
+                // Simulate receiving room updates
+                if (Math.random() > 0.7) {
+                    updateParticipantCounts();
+                }
+            }, 10000);
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            renderRooms();
+            
+            // Update participant counts every 30 seconds
+            setInterval(updateParticipantCounts, 30000);
+            
+            // Update event listeners to use debounced filter
+            document.getElementById('searchInput').removeEventListener('input', filterRooms);
+            document.getElementById('searchInput').addEventListener('input', debounceFilter);
+            
+            // Initialize WebSocket connection
+            connectWebSocket();
+            
+            // Check online status
+            checkOnlineStatus();
+            
+            // Initialize user stats
+            document.getElementById('streakCount').textContent = `${userData.streak} days`;
+            document.getElementById('totalHours').textContent = `${userData.totalHours} hours`;
+            document.getElementById('achievementCount').textContent = userData.achievements;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FocusHive | Live Study Sessions</title>
+  <script src="https://kit.fontawesome.com/2d9b67a497.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="studyRoom.css">
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <h2><a href=landingpage.html>FocusHive</a></h2>
+      </div>
+      <button id="toggle-btn">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+    <nav>
+      <ul>
+         <li><a href="dashboard (1).html">Dashboard</a></li>
+                    <li><a href="Rooms.html">Study Room</a></li>
+                    <li><a href="chatRoom.html">Chat Room</a></li>
+                    <li><a href="#ai-buddy">AI Buddy</a></li>
+                    <li><a href="Analytics.html">Analytics</a></li>
+                    <li><a href="profile.html">Profile</a></li>
+                    <li><a href="#settings">Settings</a></li>
+      </ul>
+    </nav>
+    <div class="streak">
+      <p><strong>🔥 <span id="streak-count">0</span> day streak</strong></p>
+      <small>Join a focus room for 30m to build your streak!</small>
+    </div>
+    <div class="mode-toggle">
+      <label>Light mode <input type="checkbox" checked id="theme-toggle"></label>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Top Bar -->
+    <header id="topbar">
+      <button class="floating"><i class="fas fa-stop"></i> Finish Session</button>
+      <div class="user-controls">
+        <span>YOU (Guest) <i class="fas fa-user-circle"></i></span>
+        <button title="Microphone"><i class="fas fa-microphone"></i></button>
+        <button title="Camera"><i class="fas fa-video"></i></button>
+        <button title="Lock Room"><i class="fas fa-lock"></i></button>
+        <button title="Settings"><i class="fas fa-cog"></i></button>
+      </div>
+      <div class="actions">
+        <button id="start-working-btn"><i class="fas fa-play"></i> Start Working</button>
+        <button><i class="fas fa-sign-in-alt"></i> Login</button>
+        <button><i class="fas fa-user-plus"></i> Create Account</button>
+      </div>
+      <div class="find-buddies">
+        <button><i class="fas fa-search"></i> Find Focus Buddies</button>
+        <div class="online-count">
+          <div class="pulse-dot"></div>
+          <span id="online-count">408</span> online
+        </div>
+      </div>
+    </header>
+
+    <!-- Video Grid -->
+    <section id="video-grid">
+      <!-- Kookie - Law -->
+      <article class="video-card" data-subject="law">
+        <div class="video-thumbnail">
+          <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDMyMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMjAiIGhlaWdodD0iMjAwIiBmaWxsPSIjMUUyOTNCIi8+Cjx0ZXh0IHg9IjE2MCIgeT0iMTAwIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIxOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+U3R1ZHkgU2V0dXA8L3RleHQ+Cjwvc3ZnPg==" alt="Study Setup">
+          <div class="live-badge">
+            <div class="live-dot"></div>
+            LIVE
+          </div>
+          <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiMzQjgyRjYiLz4KPHR3eHQgeD0iMjAiIHk9IjIwIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIxNiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+SzwvdGV4dD4KPC9zdmc+" alt="Kookie" class="profile-pic">
+          <button class="join-stream">
+            <i class="fas fa-play"></i> Join Stream
+          </button>
+        </div>
+        <div class="stream-info">
+          <div class="streamer-name">
+            Kookie <i class="fas fa-check-circle verified-badge" title="Verified Streamer"></i>
+          </div>
+          <div class="stream-title">Focused law study session - Constitutional Law deep dive</div>
+          <div class="subject-tag">
+            ⚖️ Law
+          </div>
+          <div class="stream-stats">
+            <div class="viewers-count">
+              <i class="fas fa-eye"></i>
+              <span class="viewer-count">124</span> watching
+            </div>
+            <div class="stream-duration">2h 15m</div>
+            <div class="engagement">
+              <i class="fas fa-heart"></i> 89
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Java Coding Session -->
+      <article class="video-card" data-subject="coding">
+        <div class="video-thumbnail">
+          <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDMyMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMjAiIGhlaWdodD0iMjAwIiBmaWxsPSIjMEYxNzJBIi8+Cjx0ZXh0IHg9IjE2MCIgeT0iMTAwIiBmaWxsPSIjMTBCOTgxIiBmb250LXNpemU9IjE4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIj5Db2RpbmcgU2V0dXA8L3RleHQ+Cjwvc3ZnPg==" alt="Coding Setup">
+          <div class="live-badge">
+            <div class="live-dot"></div>
+            LIVE
+          </div>
+          <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiMxMEI5ODEiLz4KPHR3eHQgeD0iMjAiIHk9IjIwIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIxNiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+QWw8L3RleHQ+Cjwvc3ZnPg==" alt="Alex" class="profile-pic">
+          <button class="join-stream">
+            <i class="fas fa-play"></i> Join Stream
+          </button>
+        </div>
+        <div class="stream-info">
+          <div class="streamer-name">
+            Alex Chen
+          </div>
+          <div class="stream-title">Java algorithms & data structures - LeetCode grinding session</div>
+          <div class="subject-tag">
+            💻 Coding
+          </div>
+          <div class="stream-stats">
+            <div class="viewers-count">
+              <i class="fas fa-eye"></i>
+              <span class="viewer-count">67</span> watching
+            </div>
+            <div class="stream-duration">1h 42m</div>
+            <div class="engagement">
+              🔥 2
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Yubin - Nursing -->
+      <article class="video-card" data-subject="nursing">
+        <div class="video-thumbnail">
+          <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDMyMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMjAiIGhlaWdodD0iMjAwIiBmaWxsPSIjMzMzIi8+Cjx0ZXh0IHg9IjE2MCIgeT0iMTAwIiBmaWxsPSIjRjU5RTBCIiBmb250LXNpemU9IjE4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIj5OdXJzaW5nIFN0dWR5PC90ZXh0Pgo8L3N2Zz4=" alt="Nursing Study">
+          <div class="live-badge">
+            <div class="live-dot"></div>
+            LIVE
+          </div>
+          <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiNGNTlFMEIiLz4KPHR3eHQgeD0iMjAiIHk9IjIwIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIxNiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+WTwvdGV4dD4KPC9zdmc+" alt="Yubin" class="profile-pic">
+          <button class="join-stream">
+            <i class="fas fa-play"></i> Join Stream
+          </button>
+        </div>
+        <div class="stream-info">
+          <div class="streamer-name">
+            Yubin Kim <i class="fas fa-check-circle verified-badge"></i>
+          </div>
+          <div class="stream-title">NCLEX prep intensive - Pharmacology & Patient Care</div>
+          <div class="subject-tag">
+            🩺 Nursing
+          </div>
+          <div class="stream-stats">
+            <div class="viewers-count">
+              <i class="fas fa-eye"></i>
+              <span class="viewer-count">203</span> watching
+            </div>
+            <div class="stream-duration">3h 8m</div>
+            <div class="engagement">
+              <i class="fas fa-heart"></i> 156
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Valeria - Medicine -->
+      <article class="video-card" data-subject="medicine">
+        <div class="video-thumbnail">
+          <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDMyMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMjAiIGhlaWdodD0iMjAwIiBmaWxsPSIjMjU2M0VCIi8+Cjx0ZXh0IHg9IjE2MCIgeT0iMTAwIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIxOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+TWVkIFNjaG9vbDwvdGV4dD4KPC9zdmc+" alt="Med School Study">
+          <div class="live-badge">
+            <div class="live-dot"></div>
+            LIVE
+          </div>
+          <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiNFRjQ0NDQiLz4KPHR3eHQgeD0iMjAiIHk9IjIwIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIxNiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+VjwvdGV4dD4KPC9zdmc+" alt="Valeria" class="profile-pic">
+          <button class="join-stream">
+            <i class="fas fa-play"></i> Join Stream
+          </button>
+        </div>
+        <div class="stream-info">
+          <div class="streamer-name">
+            Dr. Valeria Santos <i class="fas fa-user-md"></i>
+          </div>
+          <div class="stream-title">Internal Medicine rotation prep - Case studies & diagnosis</div>
+          <div class="subject-tag">
+            🏥 Medicine
+          </div>
+          <div class="stream-stats">
+            <div class="viewers-count">
+              <i class="fas fa-eye"></i>
+              <span class="viewer-count">312</span> watching
+            </div>
+            <div class="stream-duration">2h 55m</div>
+            <div class="engagement">
+              <i class="fas fa-star"></i> 4.9
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Exam Prep -->
+      <article class="video-card" data-subject="exam">
+        <div class="video-thumbnail">
+          <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDMyMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMjAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRUY0NDQ0Ii8+Cjx0ZXh0IHg9IjE2MCIgeT0iMTAwIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIxOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+RXhhbSBQcmVwPC90ZXh0Pgo8L3N2Zz4=" alt="Exam Prep">
+          <div class="live-badge">
+            <div class="live-dot"></div>
+            LIVE
+          </div>
+          <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiM2MzQ2QzAiLz4KPHR3eHQgeD0iMjAiIHk9IjIwIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIxNiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+UzwvdGV4dD4KPC9zdmc+" alt="Sam" class="profile-pic">
+          <button class="join-stream">
+            <i class="fas fa-play"></i> Join Stream
+          </button>
+        </div>
+        <div class="stream-info">
+          <div class="streamer-name">
+            Sam Rodriguez
+          </div>
+          <div class="stream-title">THE exam on 17th Sept - Final countdown cramming session</div>
+          <div class="subject-tag">
+            📚 Exam Prep
+          </div>
+          <div class="stream-stats">
+            <div class="viewers-count">
+              <i class="fas fa-eye"></i>
+              <span class="viewer-count">89</span> watching
+            </div>
+            <div class="stream-duration">45m</div>
+            <div class="engagement">
+              ⏰ Urgent
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- PhD Celebration -->
+      <article class="video-card celebration-card" data-subject="celebration">
+        <div class="video-thumbnail">
+          <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDMyMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMjAiIGhlaWdodD0iMjAwIiBmaWxsPSIjMTBCOTgxIi8+Cjx0ZXh0IHg9IjE2MCIgeT0iMTAwIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIyNCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+🎉IFBBUyWWVEISEQgUEhEIRXhhbSE8L3RleHQ+Cjwvc3ZnPg==" alt="Celebration">
+          <div class="live-badge">
+            <div class="live-dot"></div>
+            LIVE
+          </div>
+          <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9ImdvbGQiLz4KPHR3eHQgeD0iMjAiIHk9IjIwIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIxNiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+RDwvdGV4dD4KPC9zdmc+" alt="Dr. Maya" class="profile-pic">
+          <button class="join-stream">
+            <i class="fas fa-play"></i> Join Celebration
+          </button>
+        </div>
+        <div class="stream-info">
+          <div class="streamer-name">
+            Dr. Maya Patel <i class="fas fa-graduation-cap"></i>
+          </div>
+          <div class="stream-title">I PASSED MY PhD EXAM! 🎉 Celebration & study tips sharing</div>
+          <div class="subject-tag">
+            🎓 PhD Success
+          </div>
+          <div class="stream-stats">
+            <div class="viewers-count">
+              🎉 <span class="viewer-count">1140</span> celebrating
+            </div>
+            <div class="stream-duration">1h 12m</div>
+            <div class="engagement">
+              🔥 HOT
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Hardware Design -->
+      <article class="video-card" data-subject="engineering">
+        <div class="video-thumbnail">
+          <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDMyMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMjAiIGhlaWdodD0iMjAwIiBmaWxsPSIjMzc0MTUxIi8+Cjx0ZXh0IHg9IjE2MCIgeT0iMTAwIiBmaWxsPSIjRjU5RTBCIiBmb250LXNpemU9IjE4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIj5IYXJkd2FyZSBMYWI8L3RleHQ+Cjwvc3ZnPg==" alt="Hardware Lab">
+          <div class="live-badge">
+            <div class="live-dot"></div>
+            LIVE
+          </div>
+          <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiNGNTlFMEIiLz4KPHR3eHQgeD0iMjAiIHk9IjIwIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIxNiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+VDwvdGV4dD4KPC9zdmc+" alt="Tyler" class="profile-pic">
+          <button class="join-stream">
+            <i class="fas fa-play"></i> Join Stream
+          </button>
+        </div>
+        <div class="stream-info">
+          <div class="streamer-name">
+            Tyler Chen
+          </div>
+          <div class="stream-title">Digital circuits & FPGA programming - Hardware design project</div>
+          <div class="subject-tag">
+            ⚡ Engineering
+          </div>
+          <div class="stream-stats">
+            <div class="viewers-count">
+              <i class="fas fa-eye"></i>
+              <span class="viewer-count">45</span> watching
+            </div>
+            <div class="stream-duration">2h 33m</div>
+            <div class="engagement">
+              <i class="fas fa-heart"></i> 32
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Motivation Stream -->
+      <article class="video-card" data-subject="motivation">
+        <div class="video-thumbnail">
+          <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDMyMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMjAiIGhlaWdodD0iMjAwIiBmaWxsPSIjNDMzOENBIi8+Cjx0ZXh0IHg9IjE2MCIgeT0iMTAwIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIxNiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+TW90aXZhdGlvbmFsIFN0dWR5PC90ZXh0Pgo8L3N2Zz4=" alt="Motivation Study">
+          <div class="live-badge">
+            <div class="live-dot"></div>
+            LIVE
+          </div>
+          <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiM0MzM4Q0EiLz4KPHR3eHQgeD0iMjAiIHk9IjIwIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIxNiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+UjwvdGV4dD4KPC9zdmc+" alt="Riley" class="profile-pic">
+          <button class="join-stream">
+            <i class="fas fa-play"></i> Join Stream
+          </button>
+        </div>
+        <div class="stream-info">
+          <div class="streamer-name">
+            Riley Thompson
+          </div>
+          <div class="stream-title">Born to be a passenger, forced to study... Let's grind together!</div>
+          <div class="subject-tag">
+            🚀 Motivation
+          </div>
+          <div class="stream-stats">
+            <div class="viewers-count">
+              <i class="fas fa-eye"></i>
+              <span class="viewer-count">156</span> watching
+            </div>
+            <div class="stream-duration">3h 45m</div>
+            <div class="engagement">
+              💪 Grind Mode
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <p>© 2025 FocusHive • <a href="#">Terms</a> • <a href="#">Privacy</a> • <a href="#">Help</a></p>
+    </footer>
+  </main>
+
+  <!-- Right Tools Sidebar -->
+  <aside id="rightbar">
+    <div class="tool-icon floating" title="AI Study Buddy" data-tool="ai"><i class="fas fa-robot"></i></div>
+    <div class="tool-icon floating" title="Flashcards" data-tool="flashcards"><i class="fas fa-clone"></i></div>
+    <div class="tool-icon floating" title="Calendar / Tasks" data-tool="calendar"><i class="fas fa-calendar-alt"></i></div>
+    <div class="tool-icon floating" title="Notes / Whiteboard" data-tool="notes"><i class="fas fa-pencil-alt"></i></div>
+    <div class="tool-icon floating" title="Chat" data-tool="chat"><i class="fas fa-comments"></i></div>
+  </aside>
+
+  <script src="studyRoom.js"></script>

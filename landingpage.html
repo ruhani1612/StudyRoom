@@ -1,0 +1,1830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusHive - Study Better, Study Smarter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #fafbfc;
+            --bg-secondary: white;
+            --bg-tertiary: #f8fafc;
+            --text-primary: #333;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --border-color: #e1e5e9;
+            --border-light: #e5e7eb;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #1d4ed8;
+            --success-color: #10b981;
+            --warning-color: #fbbf24;
+            --shadow: rgba(0,0,0,0.1);
+            --card-bg: white;
+            --nav-bg: white;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #64748b;
+            --border-color: #334155;
+            --border-light: #475569;
+            --shadow: rgba(0,0,0,0.3);
+            --card-bg: #1e293b;
+            --nav-bg: #1e293b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--nav-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+
+        .logo::before {
+            content: "🎯";
+            margin-right: 8px;
+            font-size: 24px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-primary);
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            width: 50px;
+            height: 26px;
+            background: var(--border-color);
+            border-radius: 20px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            outline: none;
+        }
+
+        .theme-toggle::before {
+            content: '☀️';
+            position: absolute;
+            left: 4px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] .theme-toggle::before {
+            content: '🌙';
+            left: 26px;
+        }
+
+        .theme-toggle::after {
+            content: '';
+            width: 18px;
+            height: 18px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            left: 4px;
+            top: 4px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px var(--shadow);
+        }
+
+        [data-theme="dark"] .theme-toggle::after {
+            left: 28px;
+            background: #1e293b;
+        }
+
+        .btn-secondary {
+            padding: 8px 16px;
+            background: transparent;
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--text-muted);
+        }
+
+        .btn-primary {
+            padding: 8px 20px;
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 0 100px;
+            background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--border-color) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            clip-path: polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%);
+            z-index: 1;
+        }
+
+        [data-theme="dark"] .hero::before {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-text h1 {
+            font-size: 56px;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            color: var(--text-primary);
+        }
+
+        .hero-text .highlight {
+            color: var(--accent-primary);
+        }
+
+        .hero-text p {
+            font-size: 20px;
+            color: var(--text-secondary);
+            margin-bottom: 36px;
+            line-height: 1.6;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .btn-large {
+            padding: 16px 32px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 12px;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 32px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .hero-stat {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hero-stat::before {
+            content: "✓";
+            color: var(--success-color);
+            font-weight: bold;
+        }
+
+        .hero-image {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .study-mockup {
+            width: 100%;
+            max-width: 500px;
+            height: 320px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+            transform: perspective(1000px) rotateY(-5deg);
+            transition: transform 0.3s ease;
+        }
+
+        .study-mockup:hover {
+            transform: perspective(1000px) rotateY(0deg);
+        }
+
+        .mockup-content {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            color: white;
+        }
+
+        .mockup-stats {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        /* Innovation Showcase Section */
+        .innovation-showcase {
+            padding: 120px 0;
+            background: var(--bg-secondary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .innovation-showcase::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 50%, rgba(59, 130, 246, 0.03) 0%, transparent 50%),
+                         radial-gradient(circle at 70% 30%, rgba(16, 185, 129, 0.03) 0%, transparent 50%);
+            z-index: 1;
+        }
+
+        .innovation-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .innovation-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .innovation-header h2 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, var(--accent-primary), var(--success-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .innovation-header p {
+            font-size: 22px;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .innovation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .innovation-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 4px 20px var(--shadow);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            height: 320px;
+        }
+
+        .innovation-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 20px 60px var(--shadow);
+        }
+
+        .innovation-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 30%, rgba(59, 130, 246, 0.1) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.8s ease;
+            z-index: 2;
+        }
+
+        .innovation-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .card-video-container {
+            position: relative;
+            height: 60%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+        }
+
+        .card-video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .innovation-card:hover .card-video-overlay {
+            opacity: 1;
+        }
+
+        .play-button {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: var(--accent-primary);
+            transform: scale(0.8);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .innovation-card:hover .play-button {
+            transform: scale(1);
+            background: white;
+        }
+
+        .animated-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0.7;
+        }
+
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            width: 60px;
+            height: 60px;
+            background: rgba(59, 130, 246, 0.3);
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            width: 40px;
+            height: 40px;
+            background: rgba(16, 185, 129, 0.3);
+            top: 60%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+
+        .floating-element:nth-child(3) {
+            width: 50px;
+            height: 50px;
+            background: rgba(251, 191, 36, 0.3);
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(120deg); }
+            66% { transform: translateY(-10px) rotate(240deg); }
+        }
+
+        .card-content {
+            padding: 32px;
+            height: 40%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 3;
+        }
+
+        .card-logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            font-weight: 500;
+        }
+
+        .card-gradient-1 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-gradient-2 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .card-gradient-3 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .card-gradient-4 { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+
+        /* Features Section */
+        .features {
+            padding: 100px 0;
+            background: var(--bg-secondary);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-header h2 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .section-header p {
+            font-size: 20px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 32px;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px var(--shadow);
+            border-color: var(--accent-primary);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: white;
+        }
+
+        .feature-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Benefits Section */
+        .benefits {
+            padding: 100px 0;
+            background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--border-color) 100%);
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 48px;
+            margin-top: 64px;
+        }
+
+        .benefit {
+            text-align: center;
+        }
+
+        .benefit-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--warning-color) 0%, #f59e0b 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 36px;
+            color: white;
+            box-shadow: 0 8px 24px rgba(251, 191, 36, 0.3);
+        }
+
+        .benefit h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .benefit p {
+            color: var(--text-secondary);
+            max-width: 280px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 100px 0;
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .cta h2 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.1;
+        }
+
+        .cta p {
+            font-size: 20px;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .btn-white {
+            background: white;
+            color: var(--accent-primary);
+            border: none;
+            padding: 16px 32px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-white:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            padding: 100px 0;
+            background: var(--bg-secondary);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 32px;
+            margin-top: 64px;
+        }
+
+        .testimonial-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px var(--shadow);
+            border-color: var(--accent-primary);
+        }
+
+        .testimonial-rating {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-text {
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .author-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .author-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 16px;
+        }
+
+        .author-role {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Stats Section */
+        .stats-section {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            color: white;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 48px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 18px;
+            color: #d1d5db;
+            font-weight: 500;
+        }
+
+        /* FAQ Section */
+        .faq {
+            padding: 100px 0;
+            background: var(--bg-tertiary);
+        }
+
+        .faq-grid {
+            max-width: 800px;
+            margin: 0 auto;
+            margin-top: 64px;
+        }
+
+        .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: var(--accent-primary);
+        }
+
+        .faq-question {
+            padding: 24px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-primary);
+            transition: background 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: var(--bg-tertiary);
+        }
+
+        .faq-toggle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--accent-primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item.active .faq-toggle {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+        }
+
+        .faq-answer p {
+            padding: 0 32px 24px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Enhanced CTA */
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 14px 30px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: white;
+            transform: translateY(-2px);
+        }
+
+        .cta-features {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            font-size: 14px;
+            opacity: 0.9;
+            flex-wrap: wrap;
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+            border-radius: 50%;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 32px rgba(59, 130, 246, 0.6);
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Notification Toast */
+        .toast {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            background: var(--success-color);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+            z-index: 1001;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        /* Scroll Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            z-index: 1002;
+            transition: width 0.3s ease;
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid var(--border-light);
+            border-radius: 50%;
+            color: var(--text-secondary);
+            font-size: 16px;
+            cursor: pointer;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        [data-theme="dark"] .back-to-top {
+            background: rgba(30, 41, 59, 0.9);
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .back-to-top:hover {
+            background: var(--card-bg);
+            color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                text-align: center;
+            }
+
+            .hero-text h1 {
+                font-size: 40px;
+            }
+
+            .hero-actions {
+                justify-content: center;
+            }
+
+            .hero-stats {
+                justify-content: center;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-header h2 {
+                font-size: 32px;
+            }
+
+            .innovation-header h2 {
+                font-size: 36px;
+            }
+
+            .innovation-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta h2 {
+                font-size: 36px;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .cta-features {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 32px;
+            }
+
+            .stat-number {
+                font-size: 36px;
+            }
+
+            .faq-question {
+                padding: 20px;
+            }
+
+            .faq-answer p {
+                padding: 0 20px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="logo">FocusHive</div>
+                <ul class="nav-links">
+                    <li><a href="dashboard (1).html"  class="nav-links">Dashboard</a></li>
+                    <li><a href="Rooms.html"  class="nav-links">Study Room</a></li>
+                    <li><a href="chatRoom.html"  class="nav-links">Chat Room</a></li>
+                    <li><a href="#ai-buddy"  class="nav-links">AI Buddy</a></li>
+                    <li><a href="Analytics.html"  class="nav-links">Analytics</a></li>
+                    <li><a href="profile.html"  class="nav-links">Profile</a></li>
+                    <li><a href="#settings"  class="nav-links">Settings</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme"></button>
+                    <a href="login.html" class="btn-secondary">Sign In</a>
+                    <a href="signUpPage.html" class="btn-primary">Sign Up</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Focus Better, <span class="highlight">Study Smarter</span></h1>
+                    <p>Join thousands of students in our AI-powered study environment. Connect, focus, and achieve your academic goals with FocusHive.</p>
+                    <div class="hero-actions">
+                        <button class="btn-primary btn-large" onclick="startStudying()">Start Studying Now</button>
+                        <button class="btn-secondary btn-large" onclick="joinRoom()">Join Study Room</button>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="hero-stat">Free to use</div>
+                        <div class="hero-stat">No downloads required</div>
+                        <div class="hero-stat">1.2M+ students online</div>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="study-mockup">
+                        <div class="mockup-content">
+                            <div class="mockup-stats">
+                                <p style="font-size: 14px; opacity: 0.8;">Study Session Active</p>
+                                <h3 style="font-size: 20px; margin: 8px 0;">Mathematics • Calculus</h3>
+                                <p style="font-size: 16px;">🔥 45 min focus streak</p>
+                            </div>
+                            <div style="display: flex; gap: 8px; align-items: center;">
+                                <div style="width: 8px; height: 8px; background: #10b981; border-radius: 50%;"></div>
+                                <span style="font-size: 12px; opacity: 0.9;">12 students studying together</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Innovation Showcase Section -->
+    <section class="innovation-showcase">
+        <div class="container">
+            <div class="innovation-content">
+                <div class="innovation-header">
+                    <h2>Powered by Innovation</h2>
+                    <p>Experience cutting-edge technology that transforms how students learn, collaborate, and succeed in their academic journey.</p>
+                </div>
+                <div class="innovation-grid">
+                    <div class="innovation-card" onclick="playDemo('ai-study')">
+                        <div class="card-video-container card-gradient-1">
+                            <div class="animated-bg">
+                                <div class="floating-element"></div>
+                                <div class="floating-element"></div>
+                                <div class="floating-element"></div>
+                            </div>
+                            <div class="card-video-overlay">
+                                <button class="play-button">▶</button>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-logo">🤖 AI StudyBuddy</div>
+                            <div class="card-title">Intelligent tutoring that adapts to your learning style and provides personalized guidance</div>
+                        </div>
+                    </div>
+
+                    <div class="innovation-card" onclick="playDemo('virtual-room')">
+                        <div class="card-video-container card-gradient-2">
+                            <div class="animated-bg">
+                                <div class="floating-element"></div>
+                                <div class="floating-element"></div>
+                                <div class="floating-element"></div>
+                            </div>
+                            <div class="card-video-overlay">
+                                <button class="play-button">▶</button>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-logo">🌐 Virtual Study Rooms</div>
+                            <div class="card-title">Immersive collaborative spaces where students connect globally while maintaining focus</div>
+                        </div>
+                    </div>
+
+                    <div class="innovation-card" onclick="playDemo('analytics')">
+                        <div class="card-video-container card-gradient-3">
+                            <div class="animated-bg">
+                                <div class="floating-element"></div>
+                                <div class="floating-element"></div>
+                                <div class="floating-element"></div>
+                            </div>
+                            <div class="card-video-overlay">
+                                <button class="play-button">▶</button>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-logo">📊 Smart Analytics</div>
+                            <div class="card-title">Advanced insights into your study patterns with AI-powered recommendations for improvement</div>
+                        </div>
+                    </div>
+
+                    <div class="innovation-card" onclick="playDemo('focus-mode')">
+                        <div class="card-video-container card-gradient-4">
+                            <div class="animated-bg">
+                                <div class="floating-element"></div>
+                                <div class="floating-element"></div>
+                                <div class="floating-element"></div>
+                            </div>
+                            <div class="card-video-overlay">
+                                <button class="play-button">▶</button>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-logo">⚡ Deep Focus Mode</div>
+                            <div class="card-title">Distraction-free environment with biometric monitoring and adaptive focus techniques</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Everything You Need to Succeed</h2>
+                <p>Powerful tools designed to help you maintain focus, stay motivated, and achieve your academic goals.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📚</div>
+                    <h3>AI Study Rooms</h3>
+                    <p>Join virtual study sessions with focused learners worldwide. Boost productivity through collaborative learning.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>AI Study Buddy</h3>
+                    <p>Get personalized help and motivation from your AI companion. Available 24/7 to support your learning journey.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3>Whisper Rooms</h3>
+                    <p>Connect with study partners in quiet, focused chat environments designed for minimal distraction.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Progress Analytics</h3>
+                    <p>Track your study habits and see your improvement over time with detailed analytics and insights.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⏰</div>
+                    <h3>Pomodoro Timers</h3>
+                    <p>Built-in timers to maintain focus and manage breaks effectively using proven time management techniques.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Goal Setting</h3>
+                    <p>Set and track your academic goals with smart reminders and progress monitoring features.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits">
+        <div class="container">
+            <div class="section-header">
+                <h2>Why Students Love FocusHive</h2>
+                <p>Join a community that's serious about academic success and personal growth.</p>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit">
+                    <div class="benefit-icon">🚀</div>
+                    <h3>Boost Productivity</h3>
+                    <p>Increase your focus and get more done in less time with our proven study techniques and environment.</p>
+                </div>
+                <div class="benefit">
+                    <div class="benefit-icon">🔒</div>
+                    <h3>Distraction-Free</h3>
+                    <p>Create a focused environment free from social media distractions with our purpose-built study tools.</p>
+                </div>
+                <div class="benefit">
+                    <div class="benefit-icon">🎖️</div>
+                    <h3>Achieve Goals</h3>
+                    <p>Stay motivated and achieve your academic and personal goals with our comprehensive tracking system.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2>What Students Are Saying</h2>
+                <p>Real stories from students who transformed their study habits with FocusHive</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"FocusHive completely changed how I study. The AI buddy keeps me motivated, and the study rooms make learning feel less lonely. My grades improved by 40%!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar" style="background: #ef4444;">S</div>
+                        <div class="author-info">
+                            <div class="author-name">Sarah Chen</div>
+                            <div class="author-role">Computer Science, MIT</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"The Pomodoro timers and analytics helped me identify my peak study hours. I now study smarter, not harder, and have more free time!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar" style="background: #3b82f6;">M</div>
+                        <div class="author-info">
+                            <div class="author-name">Marcus Johnson</div>
+                            <div class="author-role">Pre-Med, Stanford</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"Being able to connect with students worldwide while staying focused is amazing. The whisper rooms are perfect for group projects!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar" style="background: #10b981;">E</div>
+                        <div class="author-info">
+                            <div class="author-name">Emily Rodriguez</div>
+                            <div class="author-role">Business, Harvard</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" data-target="1200000">0</div>
+                    <div class="stat-label">Active Students</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="50000">0</div>
+                    <div class="stat-label">Study Hours Daily</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="95">0</div>
+                    <div class="stat-label">% Student Satisfaction</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="180">0</div>
+                    <div class="stat-label">Countries Reached</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq">
+        <div class="container">
+            <div class="section-header">
+                <h2>Frequently Asked Questions</h2>
+                <p>Everything you need to know about FocusHive</p>
+            </div>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>How does the AI Study Buddy work?</span>
+                        <div class="faq-toggle">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Our AI Study Buddy uses advanced machine learning to provide personalized study recommendations, answer questions, and keep you motivated throughout your study sessions. It learns from your study patterns to offer increasingly relevant support.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Is FocusHive really free to use?</span>
+                        <div class="faq-toggle">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes! FocusHive's core features are completely free. This includes study rooms, basic analytics, and community features. We also offer Premium plans with advanced AI features and unlimited storage for power users.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Can I study offline?</span>
+                        <div class="faq-toggle">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>While many features require internet connection for collaboration, you can use our Pomodoro timers, goal tracking, and personal notes offline. Your data syncs automatically when you reconnect.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>How do I join study rooms?</span>
+                        <div class="faq-toggle">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Simply browse our available study rooms by subject or study type, and click "Join Room." You can also create your own custom study room and invite friends to join your focused study environment.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Is my study data secure and private?</span>
+                        <div class="faq-toggle">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Absolutely. We use enterprise-grade encryption to protect your data and never share your personal study information. You have complete control over your privacy settings and what you choose to share with the community.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Transform Your Study Habits?</h2>
+                <p>Join thousands of successful students who have improved their focus and achieved their goals.</p>
+                <div class="cta-buttons">
+                    <button class="btn-white" onclick="getStarted()">Get Started Today</button>
+                    <button class="btn-outline" onclick="watchDemo()">Watch Demo</button>
+                </div>
+                <div class="cta-features">
+                    <span>✨ No credit card required</span>
+                    <span>🚀 Setup in under 2 minutes</span>
+                    <span>🎯 Start studying immediately</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Floating Action Button -->
+    <button class="fab" onclick="openChat()" title="Chat with AI Buddy">🤖</button>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">↑</button>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // Theme Toggle Functionality
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            // Show notification
+            showNotification(`Switched to ${newTheme} mode! 🌓`);
+        }
+
+        // Load saved theme
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.body.setAttribute('data-theme', savedTheme);
+        }
+
+        // Initialize theme on page load
+        loadTheme();
+
+        // Innovation Card Demo Functions
+        function playDemo(type) {
+            const messages = {
+                'ai-study': '🤖 AI StudyBuddy demo starting... Experience personalized learning!',
+                'virtual-rooms': '🌐 Virtual Study Room opening... Connect with global learners!',
+                'analytics': '📊 Smart Analytics loading... Discover your learning patterns!',
+                'focus-mode': '⚡ Deep Focus Mode activating... Maximum concentration ahead!'
+            };
+            
+            showNotification(messages[type] || '🚀 Demo starting...');
+            
+            // Add visual feedback
+            const card = event.currentTarget;
+            card.style.transform = 'translateY(-8px) scale(1.02)';
+            setTimeout(() => {
+                card.style.transform = '';
+            }, 300);
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Interactive buttons
+        function startStudying() {
+            showNotification('Welcome to FocusHive! 🎯 Let\'s start your study session!');
+        }
+
+        function joinRoom() {
+            showNotification('Joining study room... 📚 Finding the perfect study environment for you!');
+        }
+
+        function getStarted() {
+            showNotification('Ready to boost your productivity? 🚀 Sign up to get started!');
+        }
+
+        function watchDemo() {
+            showNotification('🎥 Demo video opening... Get ready to see FocusHive in action!');
+        }
+
+        function openChat() {
+            showNotification('💬 AI Buddy chat opening... Your study companion is ready to help!');
+        }
+
+        // Enhanced interactive functions
+        function showNotification(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // FAQ Toggle Function
+        function toggleFaq(element) {
+            const faqItem = element.parentElement;
+            const isActive = faqItem.classList.contains('active');
+            
+            // Close all other FAQ items
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Toggle current item
+            if (!isActive) {
+                faqItem.classList.add('active');
+            }
+        }
+
+        // Animated Counter Function
+        function animateCounter(el) {
+            const target = parseInt(el.dataset.target);
+            const duration = 2000;
+            const step = target / (duration / 16);
+            let current = 0;
+            
+            const updateCounter = () => {
+                current += step;
+                if (current < target) {
+                    el.textContent = Math.floor(current).toLocaleString();
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    el.textContent = target.toLocaleString();
+                }
+            };
+            
+            updateCounter();
+        }
+
+        // Scroll Progress Bar
+        function updateProgressBar() {
+            const scrolled = (window.pageYOffset / (document.body.scrollHeight - window.innerHeight)) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        }
+
+        // Back to Top Button Visibility
+        function updateBackToTop() {
+            const backToTop = document.getElementById('backToTop');
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        }
+
+        // Enhanced Intersection Observer for animations and counters
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const enhancedObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    
+                    // Animate counters when stats section is visible
+                    if (entry.target.classList.contains('stat-number') && !entry.target.classList.contains('animated')) {
+                        entry.target.classList.add('animated');
+                        animateCounter(entry.target);
+                    }
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements
+        document.querySelectorAll('.feature-card, .benefit, .testimonial-card, .stat-number, .innovation-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'all 0.6s ease';
+            enhancedObserver.observe(el);
+        });
+
+        // Scroll event listeners
+        window.addEventListener('scroll', () => {
+            updateProgressBar();
+            updateBackToTop();
+        });
+
+        // Initialize progress bar and back to top
+        updateProgressBar();
+        updateBackToTop();
+
+        // Add floating animation to hero elements
+        const heroElements = document.querySelectorAll('.study-mockup, .hero-text');
+        
+        setInterval(() => {
+            heroElements.forEach((el, index) => {
+                const translateY = Math.sin(Date.now() * 0.001 + index) * 3;
+                
+                if (el.classList.contains('study-mockup')) {
+                    el.style.transform = `perspective(1000px) rotateY(-5deg) translateY(${translateY}px)`;
+                } else {
+                    el.style.transform = `translateY(${translateY}px)`;
+                }
+            });
+        }, 16);
+
+        // Add click effects to buttons
+        document.querySelectorAll('button, .btn-primary, .btn-secondary').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const ripple = document.createElement('div');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                
+                ripple.style.cssText = `
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(255,255,255,0.6);
+                    pointer-events: none;
+                    transform: scale(0);
+                    animation: ripple 0.6s linear;
+                    width: ${size}px;
+                    height: ${size}px;
+                    left: ${e.offsetX - size/2}px;
+                    top: ${e.offsetY - size/2}px;
+                `;
+                
+                this.style.position = 'relative';
+                this.style.overflow = 'hidden';
+                this.appendChild(ripple);
+                
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // Enhanced floating animations for innovation cards
+        const innovationCards = document.querySelectorAll('.innovation-card');
+        innovationCards.forEach((card, index) => {
+            // Add staggered entrance animation
+            card.style.animationDelay = `${index * 0.2}s`;
+            
+            // Add mouse move parallax effect
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-12px) scale(1.02)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
+        });
+
+        // Add ripple animation CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(2);
+                    opacity: 0;
+                }
+            }
+            
+            @keyframes cardEntrance {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px) scale(0.9);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0) scale(1);
+                }
+            }
+            
+            .innovation-card {
+                animation: cardEntrance 0.8s ease-out forwards;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Keyboard accessibility for theme toggle
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'T' && (e.ctrlKey || e.metaKey)) {
+                e.preventDefault();
+                toggleTheme();
+            }
+        });
+
+        // Preload theme transition
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add smooth transitions after page load
+            setTimeout(() => {
+                document.body.style.transition = 'all 0.3s ease';
+            }, 100);
+        });
+
+        // Enhanced scroll effects for innovation section
+        let ticking = false;
+        function updateInnovationParallax() {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    const scrolled = window.pageYOffset;
+                    const innovationSection = document.querySelector('.innovation-showcase');
+                    
+                    if (innovationSection) {
+                        const rect = innovationSection.getBoundingClientRect();
+                        if (rect.top < window.innerHeight && rect.bottom > 0) {
+                            const floatingElements = innovationSection.querySelectorAll('.floating-element');
+                            floatingElements.forEach((el, index) => {
+                                const speed = 0.5 + (index * 0.2);
+                                const yPos = scrolled * speed;
+                                el.style.transform = `translateY(${yPos}px) rotate(${scrolled * 0.1}deg)`;
+                            });
+                        }
+                    }
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }
+
+        window.addEventListener('scroll', updateInnovationParallax);
+
+        // Add performance optimization
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        if (prefersReducedMotion.matches) {
+            // Disable animations for users who prefer reduced motion
+            const style = document.createElement('style');
+            style.textContent = `
+                *, *::before, *::after {
+                    animation-duration: 0.01ms !important;
+                    animation-iteration-count: 1 !important;
+                    transition-duration: 0.01ms !important;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // Initialize all interactive elements
+        window.addEventListener('load', () => {
+            // Trigger initial animations
+            setTimeout(() => {
+                const cards = document.querySelectorAll('.innovation-card');
+                cards.forEach((card, index) => {
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0) scale(1)';
+                    }, index * 100);
+                });
+            }, 500);
+        });
+    </script>
+</body>
+</html>

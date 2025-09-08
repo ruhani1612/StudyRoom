@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusHive - Study Analytics</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+            color: #334155;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 18px;
+            color: #3b82f6;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: #3b82f6;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .nav {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav-item {
+            color: #64748b;
+            text-decoration: none;
+            font-size: 14px;
+            padding: 8px 0;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-item.active {
+            color: #3b82f6;
+            border-bottom-color: #3b82f6;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .page-header {
+            margin-bottom: 32px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            color: #64748b;
+            font-size: 16px;
+        }
+
+        .page-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid #e2e8f0;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .stat-change {
+            font-size: 12px;
+            color: #059669;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .stat-icon {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .stat-card:nth-child(1) { border-left: 4px solid #3b82f6; }
+        .stat-card:nth-child(1) .stat-icon { background: #dbeafe; color: #3b82f6; }
+        .stat-card:nth-child(2) { border-left: 4px solid #f59e0b; }
+        .stat-card:nth-child(2) .stat-icon { background: #fef3c7; color: #f59e0b; }
+        .stat-card:nth-child(3) { border-left: 4px solid #10b981; }
+        .stat-card:nth-child(3) .stat-icon { background: #d1fae5; color: #10b981; }
+        .stat-card:nth-child(4) { border-left: 4px solid #8b5cf6; }
+        .stat-card:nth-child(4) .stat-icon { background: #ede9fe; color: #8b5cf6; }
+
+        /* Charts Grid */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .chart-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid #e2e8f0;
+            position: relative;
+        }
+
+        .chart-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .chart-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-left: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chart-icon {
+            width: 20px;
+            height: 20px;
+            color: #64748b;
+        }
+
+        .chart-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* Chart Containers */
+        .chart-container {
+            height: 300px;
+            position: relative;
+        }
+
+        /* Subject Breakdown */
+        .subject-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .subject-item:hover {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding-left: 12px;
+            padding-right: 12px;
+        }
+
+        .subject-item:last-child {
+            border-bottom: none;
+        }
+
+        .subject-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .subject-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .subject-name {
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .subject-percentage {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        /* Bottom Grid */
+        .bottom-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        /* Achievements */
+        .achievement-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .achievement-item:last-child {
+            border-bottom: none;
+        }
+
+        .achievement-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .achievement-content h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .achievement-content p {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .achievement-progress {
+            width: 100%;
+            height: 4px;
+            background: #f1f5f9;
+            border-radius: 2px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .achievement-progress-fill {
+            height: 100%;
+            background: #3b82f6;
+            border-radius: 2px;
+        }
+
+        /* Recent Sessions */
+        .session-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0;
+            border-bottom: 1px solid #f1f5f9;
+            cursor: pointer;
+        }
+
+        .session-item:hover {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding-left: 12px;
+            padding-right: 12px;
+        }
+
+        .session-item:last-child {
+            border-bottom: none;
+        }
+
+        .session-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .session-info p {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .session-status {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-completed {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-interrupted {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        /* Goal Progress */
+        .goal-progress {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid #e2e8f0;
+            margin-top: 24px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: #f1f5f9;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+            border-radius: 6px;
+            width: 45%;
+        }
+
+        .progress-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .progress-current {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .progress-target {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        /* New Elements */
+        .date-range-selector {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            align-items: center;
+        }
+
+        .date-input {
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .insights-container {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 24px;
+        }
+
+        .insight-item {
+            padding: 16px;
+            border-left: 4px solid #3b82f6;
+            background: #f8fafc;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 16px;
+        }
+
+        .insight-item h4 {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #1e293b;
+        }
+
+        .insight-item p {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .integration-badges {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+
+        .integration-badge {
+            padding: 12px 16px;
+            background: #f1f5f9;
+            border-radius: 12px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .integration-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .integration-status {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 20px;
+        }
+
+        .status-connected {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-disconnected {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .integration-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .session-detail {
+            display: none;
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 8px;
+        }
+
+        .session-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .session-metric {
+            text-align: center;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .session-metric-value {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .session-metric-label {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .export-options {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .mobile-notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            display: none;
+            align-items: center;
+            gap: 12px;
+            z-index: 1000;
+            max-width: 300px;
+        }
+
+        .mobile-notification-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #dbeafe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3b82f6;
+            font-size: 18px;
+        }
+
+        .mobile-notification-content {
+            flex: 1;
+        }
+
+        .mobile-notification-content h4 {
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .mobile-notification-content p {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .close-notification {
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: #64748b;
+            cursor: pointer;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #64748b;
+            position: absolute;
+            top: -10px;
+            right: -10px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .export-options-modal {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .export-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .export-option:hover {
+            background: #f1f5f9;
+        }
+
+        .export-option input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+        }
+
+        @media (max-width: 768px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .bottom-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav {
+                display: none;
+            }
+
+            .date-range-selector {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .progress-stats {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .progress-stats > div {
+                text-align: left !important;
+            }
+
+            .session-metrics {
+                grid-template-columns: 1fr;
+            }
+
+            .header-actions {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block !important;
+            }
+
+            .integration-badge {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .integration-actions {
+                align-self: flex-end;
+            }
+        }
+
+        /* Mobile menu button */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #64748b;
+            cursor: pointer;
+        }
+
+        /* Mobile menu */
+        .mobile-menu {
+            position: fixed;
+            top: 64px;
+            left: 0;
+            width: 100%;
+            background: white;
+            padding: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: none;
+            flex-direction: column;
+            gap: 16px;
+            z-index: 99;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">F</div>
+           <a href="landingpage.html">FocusHive</a> 
+        </div>
+        <nav class="nav">
+            <a href="dashboard (1).html" class="nav-item">Dashboard</a>
+                    <a href="Rooms.html" class="nav-item">Study Room</a>
+                    <a href="chatRoom.html" class="nav-item">Chat Room</a>
+                    <a href="#ai-buddy" class="nav-item">AI Buddy</a>
+                    <a href="Analytics.html" class="nav-item">Analytics</a>
+                    <a href="profile.html" class="nav-item">Profile</a>
+                    <a href="#settings" class="nav-item">Settings</a>
+        </nav>
+        <button class="mobile-menu-btn">☰</button>
+        <div class="header-actions">
+            <button class="btn btn-secondary" id="export-btn">Export</button>
+            <a class="btn btn-secondary" href="profile.html">Profile</a>
+            <button class="btn btn-secondary">Settings</button>
+            <a class="btn btn-primary" href="login.html">Login</a>
+        </div>
+    </header>
+
+    <div class="mobile-menu">
+        <a href="dashboard (1).html" class="nav-item">Dashboard</a>
+        <a href="Rooms.html" class="nav-item">Study Rooms</a>
+        <a href="chatRoom.html" class="nav-item">Chat Rooms</a>
+        <a href="#" class="nav-item">AI Buddy</a>
+        <a href="Analytics.html" class="nav-item active">Analytics</a>
+        <div style="display: flex; gap: 12px; margin-top: 16px;">
+            <button class="btn btn-secondary" style="flex: 1;">Profile</button>
+            <button class="btn btn-primary" style="flex: 1;">Login</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Study Analytics</h1>
+                <p class="page-subtitle">Track your progress and optimize your study habits</p>
+            </div>
+            <div class="page-actions">
+                <div class="date-range-selector">
+                    <span>Date Range:</span>
+                    <input type="date" class="date-input" id="start-date">
+                    <span>to</span>
+                    <input type="date" class="date-input" id="end-date">
+                    <button class="btn btn-secondary" id="apply-date-btn">Apply</button>
+                </div>
+                <button class="btn btn-secondary" id="insights-btn">AI Insights</button>
+            </div>
+        </div>
+
+        <div class="insights-container" id="ai-insights" style="display: none;">
+            <h3>AI-Powered Insights</h3>
+            <div class="insight-item">
+                <h4>📊 Peak Productivity Hours</h4>
+                <p>Your focus is highest between 9-11 AM with an average efficiency of 92%. Schedule important tasks during this time.</p>
+            </div>
+            <div class="insight-item">
+                <h4>📚 Subject Balance</h4>
+                <p>You're spending 35% of your time on Mathematics. Consider allocating more time to Chemistry (currently 20%) to maintain balance.</p>
+            </div>
+            <div class="insight-item">
+                <h4>⏰ Session Length Optimization</h4>
+                <p>Your most effective sessions are 45-50 minutes long. Try implementing the Pomodoro technique with 50/10 intervals.</p>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📚</div>
+                <div class="stat-value">127.5</div>
+                <div class="stat-label">Study Hours</div>
+                <div class="stat-change">↗️ +15% from last week</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⏱️</div>
+                <div class="stat-value">28.5h</div>
+                <div class="stat-label">This Week</div>
+                <div class="stat-change">↗️ +8.3% increase</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-value">12</div>
+                <div class="stat-label">Goals Reached</div>
+                <div class="stat-change">↗️ +4 from last week</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📈</div>
+                <div class="stat-value">87%</div>
+                <div class="stat-label">Productivity Rate</div>
+                <div class="stat-change">↗️ +12% improvement</div>
+            </div>
+        </div>
+
+        <div class="charts-grid">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <div class="chart-title">
+                        <div class="chart-icon">📅</div>
+                        Weekly Activity
+                    </div>
+                    <div class="chart-actions">
+                        <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px;">Days</button>
+                        <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px;">Weeks</button>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="activityChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-header">
+                    <div class="chart-title">
+                        <div class="chart-icon">📊</div>
+                        Subject Breakdown
+                    </div>
+                    <div class="chart-actions">
+                        <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px;">Time</button>
+                        <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px;">Sessions</button>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="subjectChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-grid">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <div class="chart-title">
+                        <div class="chart-icon">🏆</div>
+                        Achievements
+                    </div>
+                    <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px;">View All</button>
+                </div>
+                <div class="achievements-list">
+                    <div class="achievement-item">
+                        <div class="achievement-icon" style="background: #fef3c7; color: #f59e0b">⚡</div>
+                        <div class="achievement-content">
+                            <h4>Study Streak Master</h4>
+                            <p>Study 5+ hours for 7 days</p>
+                            <div class="achievement-progress">
+                                <div class="achievement-progress-fill" style="width: 85%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="achievement-item">
+                        <div class="achievement-icon" style="background: #dcfce7; color: #16a34a">🎯</div>
+                        <div class="achievement-content">
+                            <h4>Focus Champion</h4>
+                            <p>Maintained 90% focus for a week</p>
+                            <div class="achievement-progress">
+                                <div class="achievement-progress-fill" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="achievement-item">
+                        <div class="achievement-icon" style="background: #dbeafe; color: #3b82f6">🏃</div>
+                        <div class="achievement-content">
+                            <h4>Early Bird</h4>
+                            <p>Started studying before 7 AM 5 times</p>
+                            <div class="achievement-progress">
+                                <div class="achievement-progress-fill" style="width: 60%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-header">
+                    <div class="chart-title">
+                        <div class="chart-icon">📝</div>
+                        Recent Sessions
+                    </div>
+                    <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px;">View All</button>
+                </div>
+                <div class="sessions-list">
+                    <div class="session-item" data-session-id="1">
+                        <div class="session-info">
+                            <h4>Mathematics</h4>
+                            <p>Today at 2:30 PM • 2h 15m</p>
+                        </div>
+                        <span class="session-status status-completed">Completed</span>
+                    </div>
+                    <div class="session-detail" id="session-1">
+                        <div class="session-metrics">
+                            <div class="session-metric">
+                                <div class="session-metric-value">92%</div>
+                                <div class="session-metric-label">Focus</div>
+                            </div>
+                            <div class="session-metric">
+                                <div class="session-metric-value">4</div>
+                                <div class="session-metric-label">Breaks</div>
+                            </div>
+                            <div class="session-metric">
+                                <div class="session-metric-value">18</div>
+                                <div class="session-metric-label">Topics Covered</div>
+                            </div>
+                        </div>
+                        <p><strong>Resources:</strong> Calculus Textbook (p. 45-62), Practice Problems Set #3</p>
+                        <p><strong>Distractions:</strong> 2 notifications, 1 phone pick-up</p>
+                    </div>
+
+                    <div class="session-item" data-session-id="2">
+                        <div class="session-info">
+                            <h4>Physics</h4>
+                            <p>Yesterday at 4:15 PM • 1h 45m</p>
+                        </div>
+                        <span class="session-status status-completed">Completed</span>
+                    </div>
+                    <div class="session-detail" id="session-2">
+                        <div class="session-metrics">
+                            <div class="session-metric">
+                                <div class="session-metric-value">88%</div>
+                                <div class="session-metric-label">Focus</div>
+                            </div>
+                            <div class="session-metric">
+                                <div class="session-metric-value">3</div>
+                                <div class="session-metric-label">Breaks</div>
+                            </div>
+                            <div class="session-metric">
+                                <div class="session-metric-value">12</div>
+                                <div class="session-metric-label">Topics Covered</div>
+                            </div>
+                        </div>
+                        <p><strong>Resources:</strong> Quantum Mechanics Notes, Online Simulation</p>
+                        <p><strong>Distractions:</strong> 1 phone call, 3 notifications</p>
+                    </div>
+
+                    <div class="session-item" data-session-id="3">
+                        <div class="session-info">
+                            <h4>Chemistry</h4>
+                            <p>Yesterday at 6:45 PM • 45m</p>
+                        </div>
+                        <span class="session-status status-interrupted">Interrupted</span>
+                    </div>
+                    <div class="session-detail" id="session-3">
+                        <div class="session-metrics">
+                            <div class="session-metric">
+                                <div class="session-metric-value">65%</div>
+                                <div class="session-metric-label">Focus</div>
+                            </div>
+                            <div class="session-metric">
+                                <div class="session-metric-value">7</div>
+                                <div class="session-metric-label">Breaks</div>
+                            </div>
+                            <div class="session-metric">
+                                <div class="session-metric-value">5</div>
+                                <div class="session-metric-label">Topics Covered</div>
+                            </div>
+                        </div>
+                        <p><strong>Resources:</strong> Organic Chemistry Flashcards</p>
+                        <p><strong>Distractions:</strong> Social media (22 minutes), 5 notifications</p>
+                        <p><strong>Interruption Reason:</strong> Phone call from friend</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="goal-progress">
+            <div class="progress-header">
+                <div class="chart-title">
+                    <div class="chart-icon">🎯</div>
+                    Weekly Goal Progress
+                </div>
+                <button class="btn btn-secondary" id="configure-goal-btn">Configure Goal</button>
+            </div>
+            <p style="color: #64748b; margin-bottom: 16px;">Your weekly study goal completion</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="goal-progress-bar"></div>
+            </div>
+            <div class="progress-stats">
+                <div>
+                    <div class="progress-current" id="goal-current">45</div>
+                    <div class="progress-target">study sessions this week</div>
+                </div>
+                <div style="text-align: right;">
+                    <div style="font-size: 24px; font-weight: 700;">Mathematics</div>
+                    <div style="color: #059669; font-size: 14px;">+15.8% improvement</div>
+                </div>
+                <div style="text-align: right;">
+                    <div style="color: #64748b; font-size: 14px;">Goal: <span id="goal-target">50</span> hours</div>
+                    <div style="color: #64748b; font-size: 12px;"><span id="goal-remaining">5.5</span> hours remaining</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="insights-container">
+            <h3>Integrations</h3>
+            <p>Connect your favorite apps and services to enhance your analytics</p>
+            <div class="integration-badges">
+                <div class="integration-badge" id="google-calendar-integration">
+                    <div class="integration-info">
+                        <span>📅</span>
+                        <div>
+                            <div>Google Calendar</div>
+                            <div class="integration-status status-disconnected" id="google-calendar-status">Not Connected</div>
+                        </div>
+                    </div>
+                    <div class="integration-actions">
+                        <button class="btn btn-primary btn-connect" data-service="google-calendar">Connect</button>
+                        <button class="btn btn-secondary btn-disconnect" data-service="google-calendar" style="display: none;">Disconnect</button>
+                    </div>
+                </div>
+                
+                <div class="integration-badge" id="notion-integration">
+                    <div class="integration-info">
+                        <span>📝</span>
+                        <div>
+                            <div>Notion</div>
+                            <div class="integration-status status-connected" id="notion-status">Connected</div>
+                        </div>
+                    </div>
+                    <div class="integration-actions">
+                        <button class="btn btn-primary btn-connect" data-service="notion" style="display: none;">Connect</button>
+                        <button class="btn btn-secondary btn-disconnect" data-service="notion">Disconnect</button>
+                    </div>
+                </div>
+                
+                <div class="integration-badge" id="todoist-integration">
+                    <div class="integration-info">
+                        <span>✅</span>
+                        <div>
+                            <div>Todoist</div>
+                            <div class="integration-status status-disconnected" id="todoist-status">Not Connected</div>
+                        </div>
+                    </div>
+                    <div class="integration-actions">
+                        <button class="btn btn-primary btn-connect" data-service="todoist">Connect</button>
+                        <button class="btn btn-secondary btn-disconnect" data-service="todoist" style="display: none;">Disconnect</button>
+                    </div>
+                </div>
+                
+                <div class="integration-badge" id="canvas-integration">
+                    <div class="integration-info">
+                        <span>🎓</span>
+                        <div>
+                            <div>Canvas LMS</div>
+                            <div class="integration-status status-disconnected" id="canvas-status">Not Connected</div>
+                        </div>
+                    </div>
+                    <div class="integration-actions">
+                        <button class="btn btn-primary btn-connect" data-service="canvas">Connect</button>
+                        <button class="btn btn-secondary btn-disconnect" data-service="canvas" style="display: none;">Disconnect</button>
+                    </div>
+                </div>
+                
+                <div class="integration-badge" id="spotify-integration">
+                    <div class="integration-info">
+                        <span>🎵</span>
+                        <div>
+                            <div>Spotify</div>
+                            <div class="integration-status status-connected" id="spotify-status">Connected</div>
+                        </div>
+                    </div>
+                    <div class="integration-actions">
+                        <button class="btn btn-primary btn-connect" data-service="spotify" style="display: none;">Connect</button>
+                        <button class="btn btn-secondary btn-disconnect" data-service="spotify">Disconnect</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="export-options">
+            <button class="btn btn-secondary" id="export-pdf-btn">Export as PDF</button>
+            <button class="btn btn-secondary" id="export-csv-btn">Export as CSV</button>
+            <button class="btn btn-secondary" id="export-json-btn">Export as JSON</button>
+        </div>
+    </div>
+
+    <!-- Integration Modals -->
+    <div class="modal" id="integration-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="integration-modal-title">Connect to Google Calendar</h3>
+                <button class="close-modal" data-modal="integration-modal">×</button>
+            </div>
+            <div id="integration-modal-content">
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="integration-email" placeholder="your.email@example.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Permissions</label>
+                    <div style="border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px;">
+                        <label style="display: block; margin-bottom: 8px;">
+                            <input type="checkbox" checked> Read calendar events
+                        </label>
+                        <label style="display: block; margin-bottom: 8px;">
+                            <input type="checkbox" checked> Add study sessions to calendar
+                        </label>
+                        <label style="display: block;">
+                            <input type="checkbox"> Modify existing events
+                        </label>
+                    </div>
+                </div>
+                <button class="btn btn-primary" id="confirm-integration">Authorize Access</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Goal Configuration Modal -->
+    <div class="modal" id="goal-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Configure Study Goal</h3>
+                <button class="close-modal" data-modal="goal-modal">×</button>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Goal Type</label>
+                <select class="form-select" id="goal-type">
+                    <option value="hours">Total Study Hours</option>
+                    <option value="subject">Subject-specific Hours</option>
+                    <option value="sessions">Number of Sessions</option>
+                    <option value="focus">Focus Rate Target</option>
+                </select>
+            </div>
+            <div class="form-group" id="subject-select-group" style="display: none;">
+                <label class="form-label">Subject</label>
+                <select class="form-select" id="goal-subject">
+                    <option value="mathematics">Mathematics</option>
+                    <option value="physics">Physics</option>
+                    <option value="chemistry">Chemistry</option>
+                    <option value="biology">Biology</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Target Value</label>
+                <input type="number" class="form-input" id="goal-target-input" placeholder="e.g., 50" value="50">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Timeframe</label>
+                <select class="form-select" id="goal-timeframe">
+                    <option value="daily">Daily</option>
+                    <option value="weekly" selected>Weekly</option>
+                    <option value="monthly">Monthly</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" id="save-goal-btn">Save Goal</button>
+        </div>
+    </div>
+
+    <!-- Export Modal -->
+    <div class="modal" id="export-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Export Data</h3>
+                <button class="close-modal" data-modal="export-modal">×</button>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Date Range</label>
+                <div style="display: flex; gap: 12px;">
+                    <input type="date" class="form-input" id="export-start-date">
+                    <span style="line-height: 40px;">to</span>
+                    <input type="date" class="form-input" id="export-end-date">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Data to Include</label>
+                <div class="export-options-modal">
+                    <label class="export-option">
+                        <input type="checkbox" checked> Study Sessions
+                    </label>
+                    <label class="export-option">
+                        <input type="checkbox" checked> Subject Breakdown
+                    </label>
+                    <label class="export-option">
+                        <input type="checkbox" checked> Goals Progress
+                    </label>
+                    <label class="export-option">
+                        <input type="checkbox" checked> Achievements
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Format</label>
+                <select class="form-select" id="export-format">
+                    <option value="pdf">PDF Report</option>
+                    <option value="csv">CSV Data</option>
+                    <option value="json">JSON Data</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" id="confirm-export-btn">Export</button>
+        </div>
+    </div>
+
+    <div class="mobile-notification" id="mobile-notification">
+        <div class="mobile-notification-icon">📱</div>
+        <div class="mobile-notification-content">
+            <h4>Mobile App Available</h4>
+            <p>Get FocusHive on your phone for on-the-go tracking</p>
+        </div>
+        <button class="close-notification" id="close-notification">×</button>
+    </div>
+
+    <script>
+        // Initialize charts
+        function initCharts() {
+            // Weekly Activity Chart
+            const activityCtx = document.getElementById('activityChart').getContext('2d');
+            new Chart(activityCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Study Hours',
+                        data: [6.25, 5.5, 7.75, 4.33, 5.83, 2.5, 8.25],
+                        backgroundColor: '#3b82f6',
+                        borderColor: '#3b82f6',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Hours'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y + ' hours';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Subject Breakdown Chart
+            const subjectCtx = document.getElementById('subjectChart').getContext('2d');
+            new Chart(subjectCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Mathematics', 'Physics', 'Chemistry', 'Biology'],
+                    datasets: [{
+                        data: [35.2, 24.8, 20.5, 19.5],
+                        backgroundColor: [
+                            '#3b82f6',
+                            '#f59e0b',
+                            '#10b981',
+                            '#8b5cf6'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Integration management
+        function setupIntegrations() {
+            const connectButtons = document.querySelectorAll('.btn-connect');
+            const disconnectButtons = document.querySelectorAll('.btn-disconnect');
+            const integrationModal = document.getElementById('integration-modal');
+            const modalTitle = document.getElementById('integration-modal-title');
+            const confirmIntegrationBtn = document.getElementById('confirm-integration');
+            
+            let currentService = null;
+            
+            // Connect button handler
+            connectButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    currentService = this.getAttribute('data-service');
+                    const serviceName = getServiceName(currentService);
+                    
+                    // Update modal title
+                    modalTitle.textContent = `Connect to ${serviceName}`;
+                    
+                    // Show modal
+                    integrationModal.style.display = 'flex';
+                });
+            });
+            
+            // Disconnect button handler
+            disconnectButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const service = this.getAttribute('data-service');
+                    disconnectService(service);
+                });
+            });
+            
+            // Confirm integration
+            confirmIntegrationBtn.addEventListener('click', function() {
+                if (currentService) {
+                    connectService(currentService);
+                    integrationModal.style.display = 'none';
+                }
+            });
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target === integrationModal) {
+                    integrationModal.style.display = 'none';
+                }
+            });
+        }
+        
+        function connectService(service) {
+            const statusElement = document.getElementById(`${service}-status`);
+            const connectBtn = document.querySelector(`.btn-connect[data-service="${service}"]`);
+            const disconnectBtn = document.querySelector(`.btn-disconnect[data-service="${service}"]`);
+            
+            // Update UI to show connected status
+            statusElement.textContent = 'Connected';
+            statusElement.className = 'integration-status status-connected';
+            connectBtn.style.display = 'none';
+            disconnectBtn.style.display = 'block';
+            
+            // Show success notification
+            showNotification(`Successfully connected to ${getServiceName(service)}`);
+            
+            // In a real app, you would make an API call to establish the connection
+            console.log(`Connected to ${service}`);
+        }
+        
+        function disconnectService(service) {
+            const statusElement = document.getElementById(`${service}-status`);
+            const connectBtn = document.querySelector(`.btn-connect[data-service="${service}"]`);
+            const disconnectBtn = document.querySelector(`.btn-disconnect[data-service="${service}"]`);
+            
+            // Update UI to show disconnected status
+            statusElement.textContent = 'Not Connected';
+            statusElement.className = 'integration-status status-disconnected';
+            connectBtn.style.display = 'block';
+            disconnectBtn.style.display = 'none';
+            
+            // Show notification
+            showNotification(`Disconnected from ${getServiceName(service)}`);
+            
+            // In a real app, you would make an API call to revoke access
+            console.log(`Disconnected from ${service}`);
+        }
+        
+        function getServiceName(service) {
+            const serviceNames = {
+                'google-calendar': 'Google Calendar',
+                'notion': 'Notion',
+                'todoist': 'Todoist',
+                'canvas': 'Canvas LMS',
+                'spotify': 'Spotify'
+            };
+            
+            return serviceNames[service] || service;
+        }
+        
+        function showNotification(message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = 'mobile-notification';
+            notification.style.display = 'flex';
+            notification.style.position = 'fixed';
+            notification.style.bottom = '20px';
+            notification.style.right = '20px';
+            notification.style.background = 'white';
+            notification.style.borderRadius = '12px';
+            notification.style.padding = '16px';
+            notification.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.1)';
+            notification.style.zIndex = '1000';
+            notification.style.maxWidth = '300px';
+            
+            notification.innerHTML = `
+                <div class="mobile-notification-icon">✅</div>
+                <div class="mobile-notification-content">
+                    <p>${message}</p>
+                </div>
+                <button class="close-notification">×</button>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Add close handler
+            notification.querySelector('.close-notification').addEventListener('click', function() {
+                notification.remove();
+            });
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (document.body.contains(notification)) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
+
+        // Goal configuration
+        function setupGoalConfiguration() {
+            const configureGoalBtn = document.getElementById('configure-goal-btn');
+            const goalModal = document.getElementById('goal-modal');
+            const goalTypeSelect = document.getElementById('goal-type');
+            const subjectSelectGroup = document.getElementById('subject-select-group');
+            const saveGoalBtn = document.getElementById('save-goal-btn');
+            
+            // Show/hide subject select based on goal type
+            goalTypeSelect.addEventListener('change', function() {
+                subjectSelectGroup.style.display = this.value === 'subject' ? 'block' : 'none';
+            });
+            
+            // Open goal modal
+            configureGoalBtn.addEventListener('click', function() {
+                goalModal.style.display = 'flex';
+            });
+            
+            // Save goal
+            saveGoalBtn.addEventListener('click', function() {
+                const goalType = goalTypeSelect.value;
+                const goalTarget = document.getElementById('goal-target-input').value;
+                const goalTimeframe = document.getElementById('goal-timeframe').value;
+                const goalSubject = document.getElementById('goal-subject').value;
+                
+                // Update goal display
+                document.getElementById('goal-target').textContent = goalTarget;
+                
+                // Calculate remaining hours (for demo purposes)
+                const currentHours = 45; // This would come from your data
+                const remaining = goalTarget - currentHours;
+                document.getElementById('goal-remaining').textContent = remaining > 0 ? remaining.toFixed(1) : '0';
+                
+                // Update progress bar
+                const progressPercent = Math.min((currentHours / goalTarget) * 100, 100);
+                document.getElementById('goal-progress-bar').style.width = `${progressPercent}%`;
+                
+                // Show notification
+                showNotification('Study goal updated successfully!');
+                
+                // Close modal
+                goalModal.style.display = 'none';
+            });
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target === goalModal) {
+                    goalModal.style.display = 'none';
+                }
+            });
+        }
+
+        // Export functionality
+        function setupExportFunctionality() {
+            const exportBtn = document.getElementById('export-btn');
+            const exportPdfBtn = document.getElementById('export-pdf-btn');
+            const exportCsvBtn = document.getElementById('export-csv-btn');
+            const exportJsonBtn = document.getElementById('export-json-btn');
+            const exportModal = document.getElementById('export-modal');
+            const confirmExportBtn = document.getElementById('confirm-export-btn');
+            
+            // Open export modal
+            exportBtn.addEventListener('click', function() {
+                exportModal.style.display = 'flex';
+            });
+            
+            // Direct PDF export
+            exportPdfBtn.addEventListener('click', function() {
+                exportAsPdf();
+            });
+            
+            // Direct CSV export
+            exportCsvBtn.addEventListener('click', function() {
+                exportAsCsv();
+            });
+            
+            // Direct JSON export
+            exportJsonBtn.addEventListener('click', function() {
+                exportAsJson();
+            });
+            
+            // Confirm export from modal
+            confirmExportBtn.addEventListener('click', function() {
+                const format = document.getElementById('export-format').value;
+                
+                switch(format) {
+                    case 'pdf':
+                        exportAsPdf();
+                        break;
+                    case 'csv':
+                        exportAsCsv();
+                        break;
+                    case 'json':
+                        exportAsJson();
+                        break;
+                }
+                
+                exportModal.style.display = 'none';
+            });
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target === exportModal) {
+                    exportModal.style.display = 'none';
+                }
+            });
+        }
+        
+        function exportAsPdf() {
+            // Show notification
+            showNotification('Generating PDF report...');
+            
+            // Use html2canvas and jsPDF to generate PDF
+            html2canvas(document.querySelector('.container')).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const imgProps = pdf.getImageProperties(imgData);
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+                
+                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                pdf.save('focushive-report.pdf');
+                
+                showNotification('PDF report downloaded successfully!');
+            });
+        }
+        
+        function exportAsCsv() {
+            // Simple CSV export example
+            const csvContent = "data:text/csv;charset=utf-8,"
+                + "Date,Subject,Duration,Focus%\n"
+                + "2023-05-01,Mathematics,2.5,92\n"
+                + "2023-05-01,Physics,1.75,88\n"
+                + "2023-05-02,Chemistry,0.75,65\n";
+            
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "study_sessions.csv");
+            document.body.appendChild(link);
+            link.click();
+            
+            showNotification('CSV file downloaded successfully!');
+        }
+        
+        function exportAsJson() {
+            // Simple JSON export example
+            const data = {
+                studySessions: [
+                    { date: "2023-05-01", subject: "Mathematics", duration: 2.5, focus: 92 },
+                    { date: "2023-05-01", subject: "Physics", duration: 1.75, focus: 88 },
+                    { date: "2023-05-02", subject: "Chemistry", duration: 0.75, focus: 65 }
+                ],
+                weeklySummary: {
+                    totalHours: 28.5,
+                    productivity: 87,
+                    goalsAchieved: 12
+                }
+            };
+            
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "study_data.json");
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+            
+            showNotification('JSON file downloaded successfully!');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize charts
+            initCharts();
+            
+            // Setup integrations
+            setupIntegrations();
+            
+            // Setup goal configuration
+            setupGoalConfiguration();
+            
+            // Setup export functionality
+            setupExportFunctionality();
+            
+            // Mobile menu toggle
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                mobileMenu.style.display = mobileMenu.style.display === 'flex' ? 'none' : 'flex';
+            });
+            
+            // Session details toggle
+            const sessionItems = document.querySelectorAll('.session-item');
+            
+            sessionItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const sessionId = this.getAttribute('data-session-id');
+                    const detailElement = document.getElementById('session-' + sessionId);
+                    
+                    // Hide all other details first
+                    document.querySelectorAll('.session-detail').forEach(detail => {
+                        if (detail.id !== 'session-' + sessionId) {
+                            detail.style.display = 'none';
+                        }
+                    });
+                    
+                    // Toggle this detail
+                    detailElement.style.display = detailElement.style.display === 'block' ? 'none' : 'block';
+                });
+            });
+            
+            // AI Insights toggle
+            const insightsBtn = document.getElementById('insights-btn');
+            const aiInsights = document.getElementById('ai-insights');
+            
+            insightsBtn.addEventListener('click', function() {
+                aiInsights.style.display = aiInsights.style.display === 'block' ? 'none' : 'block';
+            });
+            
+            // Date range functionality
+            const applyDateBtn = document.getElementById('apply-date-btn');
+            
+            applyDateBtn.addEventListener('click', function() {
+                const startDate = document.getElementById('start-date').value;
+                const endDate = document.getElementById('end-date').value;
+                
+                if (startDate && endDate) {
+                    alert(`Date range applied: ${startDate} to ${endDate}`);
+                    // In a real app, this would filter the data and update charts
+                } else {
+                    alert('Please select both start and end dates');
+                }
+            });
+            
+            // Show mobile notification after a delay
+            setTimeout(() => {
+                document.getElementById('mobile-notification').style.display = 'flex';
+            }, 5000);
+            
+            document.getElementById('close-notification').addEventListener('click', function() {
+                document.getElementById('mobile-notification').style.display = 'none';
+            });
+            
+            // Animate progress bars on page load
+            const bars = document.querySelectorAll('.bar-fill, .progress-fill, .achievement-progress-fill');
+            bars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0';
+                setTimeout(() => {
+                    bar.style.transition = 'width 1.5s ease-out';
+                    bar.style.width = width;
+                }, 300);
+            });
+
+            // Add hover effects to stat cards
+            const statCards = document.querySelectorAll('.stat-card');
+            statCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-4px)';
+                    this.style.boxShadow = '0 8px 25px rgba(0,0,0,0.1)';
+                    this.style.transition = 'all 0.3s ease';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = 'none';
+                });
+            });
+
+            // Add click functionality to subject items
+            const subjectItems = document.querySelectorAll('.subject-item');
+            subjectItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // Reset all items
+                    subjectItems.forEach(i => i.style.background = 'transparent');
+                    // Highlight clicked item
+                    this.style.background = '#f8fafc';
+                    this.style.borderRadius = '8px';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
